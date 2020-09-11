@@ -19,7 +19,9 @@
   <a href="https://github.com/hcnhatnam/IpLocationConnect/pulls">Request feature</a>
 </p>
 
---- 
+![CI](https://github.com/hcnhatnam/GPSocial/workflows/CI/badge.svg?branch=master&event=push)
+![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
+ [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
 
 ## Table of contents
 
