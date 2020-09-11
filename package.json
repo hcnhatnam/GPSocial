@@ -1,4 +1,8 @@
 {
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": "https://github.com/hcnhatnam/GPSocial",
   "name": "vue-admin-template",
   "version": "4.4.0",
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
