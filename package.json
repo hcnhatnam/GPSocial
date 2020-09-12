@@ -3,10 +3,10 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "repository": "https://github.com/hcnhatnam/GPSocial",
-  "name": "vue-admin-template",
-  "version": "4.4.0",
-  "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
-  "author": "Pan <panfree23@gmail.com>",
+  "name": "gpsocial",
+  "version": "1.0.0.0",
+  "description": "Online social network. GPSocial is a app to conect and have conversations with new friends around the world depend on location.",
+  "author": "HoangNam <hcnhatnam@gmail.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
