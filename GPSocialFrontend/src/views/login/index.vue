@@ -54,9 +54,12 @@
         @click.native.prevent="handleLogin"
       >Login</el-button>
 
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span>password: any</span>
+      <div class="tips" v-on:click="register()">
+        <div>
+          <el-link icon="el-icon-edit" type="primary">Register user?</el-link>
+        </div>
+        <!-- <span style="margin-right:20px;">username: admin</span>
+        <span>password: any</span>-->
       </div>
     </el-form>
   </div>
@@ -109,6 +112,20 @@ export default {
     }
   },
   methods: {
+    register() {
+      console.log("regster");
+      // const appName = rowTable.appname;
+      // const params = {
+      //   appname: appName,
+      //   name: this.aliasname(appName),
+      //   nametype: this.nametype
+      // };
+      this.$router.push({
+        name: "Register"
+        // name: "AppOwnerDetail",
+        // params: params
+      });
+    },
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";

@@ -17,6 +17,8 @@ import "@/permission"; // permission control
 import * as VueGoogleMaps from "vue2-google-maps";
 import Chat from "vue-beautiful-chat";
 import VueTouchRipple from "vue-touch-ripple";
+import Gravatar from 'vue-gravatar';
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -40,6 +42,8 @@ Vue.use(VueTouchRipple, {
 Vue.use(ElementUI, {
   locale
 });
+
+Vue.component('v-gravatar', Gravatar);
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 Vue.use(VueGoogleMaps, {
