@@ -53,6 +53,7 @@ public class LoginController {
 
     @PostMapping("/user/login")
     public ResultObject login(
+            HttpServletRequest request,
             @RequestParam(value = "username", defaultValue = "") String username,
             @RequestParam(value = "password", defaultValue = "") String password,
             @RequestParam(value = "IPv4", defaultValue = "") String IPv4,
@@ -64,7 +65,7 @@ public class LoginController {
             HttpServletResponse response) {
         ResultObject resultObject = new ResultObject(0, "");
         try {
-            IPv4 = IPS.get((rd.nextInt(10000) % IPS.size()) - 1);
+            IPv4 = IpController.getClientIpAddressIfServletRequestExist(request);
             if (USER_LOGIN.get(username) != null) {
                 String token = username;
                 UserApp userApp = new UserApp(username, password,

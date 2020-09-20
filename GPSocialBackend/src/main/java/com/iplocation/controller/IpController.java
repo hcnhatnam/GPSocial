@@ -9,6 +9,7 @@ import com.iplocation.entites.ResultIp2Location;
 import com.iplocation.entites.ResultObject;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,45 @@ public class IpController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(CORSFilter.class);
 
-    private static final String template = "Hello, %s!";
+    private static final String[] IP_HEADER_CANDIDATES = {
+        "X-Forwarded-For",
+        "Proxy-Client-IP",
+        "WL-Proxy-Client-IP",
+        "HTTP_X_FORWARDED_FOR",
+        "HTTP_X_FORWARDED",
+        "HTTP_X_CLUSTER_CLIENT_IP",
+        "HTTP_CLIENT_IP",
+        "HTTP_FORWARDED_FOR",
+        "HTTP_FORWARDED",
+        "HTTP_VIA",
+        "REMOTE_ADDR"
+    };
+
+    @GetMapping("/showip")
+    public static ResultObject showip(HttpServletRequest request) {
+        ResultObject resultObject = new ResultObject(0, "");
+        String ip = getClientIpAddressIfServletRequestExist(request);
+        if (ip.isEmpty()) {
+            resultObject.setError(ResultObject.ERROR);
+            resultObject.setMessage("Can't not Found IP");
+        } else {
+            resultObject.putData("ip", ip);
+        }
+        return resultObject;
+    }
+
+    public static String getClientIpAddressIfServletRequestExist(HttpServletRequest request) {
+        for (String header : IP_HEADER_CANDIDATES) {
+            String ipList = request.getHeader(header);
+            if (ipList != null && ipList.length() != 0 && !"unknown".equalsIgnoreCase(ipList)) {
+                String ip = ipList.split(",")[0];
+                return ip;
+            }
+        }
+
+        return request.getRemoteAddr();
+    }
+
     private final AtomicLong counter = new AtomicLong();
     private final String API_LOCATION = "https://geolocation-db.com/json/697de680-a737-11ea-9820-af05f4014d91";
 
@@ -56,13 +95,8 @@ public class IpController {
         return resultObject;
     }
 
-    @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    }
-
     @GetMapping("/ip")
-    public ResultObject ip(@RequestParam(value = "ip", defaultValue = "") String ip) {
+    public ResultObject ipInfo(@RequestParam(value = "ip", defaultValue = "") String ip) {
         ResultObject resultObject = new ResultObject(0, "");
         try {
             resultObject.putData("ips", getLocationInfo(ip));

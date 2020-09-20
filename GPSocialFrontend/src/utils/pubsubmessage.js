@@ -6,7 +6,7 @@ export default class PubSubMessageClass {
     try {
       this.onMessageReceived = onMessageReceived
       this.topicSendUser = topicSendUser
-      this.socket = new SockJS("http://localhost:8000/ws");
+      this.socket = new SockJS(process.env.VUE_APP_BASE_API + "/ws");
 
       var options = {
         debug: false

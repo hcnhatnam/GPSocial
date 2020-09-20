@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class RestServiceApplication {
 
     public static void main(String[] args) {
-        System.getProperties().put("server.port", 8000);
+        System.getProperties().put("server.port", 8765);
         SpringApplication.run(RestServiceApplication.class, args);
     }
 }
