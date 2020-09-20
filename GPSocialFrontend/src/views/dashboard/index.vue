@@ -54,7 +54,7 @@
       <Chat
         :invited-user-id="chooseUser"
         :users="users"
-        :current-user-id="user.name"
+        :current-user-id="user._id"
         :theme="theme"
       />
     </el-dialog>
@@ -63,14 +63,16 @@
 
 <script>
 class Marker {
-  constructor(info, city, lat, lng, name) {
-    this.id = city;
+  constructor(info, city, lat, lng, name, user) {
+    this.city = city;
     this.info = info;
     this.position = {
       lat: lat,
       lng: lng
     };
     this.name = name;
+    this.user = user;
+
     // this.icon = "https://img.icons8.com/bubbles/50/000000/street-view.png";
   }
 }
@@ -80,6 +82,8 @@ import store from "@/store";
 import PubSubMessageClass from "@/utils/pubsubmessage";
 import UserChat from "@/utils/UserChat";
 import { EventBus } from "@/main";
+import { findUserByEmail, createUser } from "@/firestore";
+
 export default {
   components: {
     Chat: () => import("@/components/Chat")
@@ -132,13 +136,14 @@ export default {
       this.centerMap = mark.position;
       for (const marker of this.markers) {
         const user = this.users.find(x => x._id === marker.name);
-        console.log("user", user);
+        console.log("user", user, marker);
         if (user === undefined) {
           this.users.push(
             new UserChat(
-              marker.name,
-              marker.name,
-              "https://img.icons8.com/officel/16/000000/circled-user-male-skin-type-6.png"
+              marker.user._id,
+              marker.user.name,
+              marker.user.avatar, // "https://img.icons8.com/officel/16/000000/circled-user-male-skin-type-6.png",
+              marker.user.email
             )
           );
         }
@@ -146,27 +151,43 @@ export default {
     }
   },
   mounted() {
-    this.screen = screen;
-    this.markLocaionWithIp(this.user.ip, this.user.name);
-    this.timmerGetInfo();
-    this.users.push(
-      new UserChat(this.user.name, this.user.name, this.user.avatar)
-    );
-    this.pubsubmessage = new PubSubMessageClass(
-      this.user.name,
-      this.onMessageReceived,
-      true
-    );
-    EventBus.$on("sendMessage", room => {
-      for (const user of room.users) {
-        if (user.username !== this.user.name) {
-          this.pubsubmessage.sendMessage(
-            "Message comming",
-            this.user.name,
-            user.username
-          );
-        }
+    console.log("this.user", this.user);
+    findUserByEmail(this.user.email).then(userGet => {
+      if (userGet == null) {
+        const _id = createUser(this.user);
+        this.user._id = _id;
+      } else {
+        this.user._id = userGet._id;
       }
+      this.screen = screen;
+      console.log("use========", this.user);
+
+      this.markLocaionWithIp(this.user.ip, this.user.name, this.user);
+      this.timmerGetInfo();
+      this.users.push(
+        new UserChat(
+          this.user._id,
+          this.user.name,
+          this.user.avatar,
+          this.user.email
+        )
+      );
+      this.pubsubmessage = new PubSubMessageClass(
+        this.user.name,
+        this.onMessageReceived,
+        true
+      );
+      EventBus.$on("sendMessage", room => {
+        for (const user of room.users) {
+          if (user.username !== this.user.name) {
+            this.pubsubmessage.sendMessage(
+              "Message comming",
+              this.user.name,
+              user.username
+            );
+          }
+        }
+      });
     });
   },
   methods: {
@@ -179,7 +200,7 @@ export default {
       this.dialogVisible = true;
     },
     clickChooseUser(maker) {
-      this.chooseUser = maker.name;
+      this.chooseUser = maker.user._id;
       this.dialogVisible = true;
     },
     timmerGetInfo() {
@@ -190,11 +211,20 @@ export default {
             for (const name of Object.keys(userofapp)) {
               if (name !== this.user.name) {
                 if (this.mapUser[name] === undefined) {
-                  this.mapUser[name] = userofapp[name];
-                  this.markLocaionWithIp(
-                    userofapp[name].ip,
-                    userofapp[name].name
-                  );
+                  const user = userofapp[name];
+                  findUserByEmail(user.email).then(userGet => {
+                    if (userGet == null) {
+                      const _id = createUser(user);
+                    }
+                    user._id = userGet._id;
+                    this.mapUser[name] = userofapp[name];
+                    console.log("thuaaaaaaaaaaa", user);
+                    this.markLocaionWithIp(
+                      userofapp[name].ip,
+                      userofapp[name].name,
+                      user
+                    );
+                  });
                 }
               }
             }
@@ -203,8 +233,9 @@ export default {
       }, 2000);
     },
     clickMarker(marker) {
-      this.chooseUser = marker.name;
+      this.chooseUser = marker.user._id;
       this.dialogVisible = true;
+      console.log("marker", marker);
       // this.pubsubmessage.sendMessage(
       //   "Message comming",
       //   this.user.name,
@@ -231,16 +262,17 @@ export default {
         position: { lat: event.latLng.lat(), lng: event.latLng.lng() }
       });
     },
-    markLocaionWithIp(ip, name) {
+    markLocaionWithIp(ip, name, user) {
       getInfoWithIp(ip).then(resp => {
         const result = resp.data;
-
+        console.log("++++++++++++", result, user, name);
         const marker = new Marker(
           result,
           result.city,
           result.latitude,
           result.longitude,
-          name
+          name,
+          user
         );
         if (name === this.user.name) {
           marker.icon = {

@@ -69,10 +69,16 @@ import {
   filesRef,
   deleteDbField,
   existUser,
-  existRoom
+  existRoom,
+  findUser
 } from "@/firestore";
 import { EventBus } from "@/main";
-import { parseTimestamp, isSameDay } from "@/utils/dates";
+import {
+  parseTimestamp,
+  isSameDay,
+  getCurrentTimestamp,
+  convertTimeStampToDate
+} from "@/utils/dates";
 // import ChatWindow from './../../src/ChatWindow'
 import ChatWindow from "vue-advanced-chat";
 import "vue-advanced-chat/dist/vue-advanced-chat.css";
@@ -128,7 +134,7 @@ export default {
   },
   mounted() {
     this.invitedUserId = this.invitedUserIdProp;
-    this.createRoom();
+    // this.createRoom();
     this.fetchRooms();
     this.updateUserOnlineStatus();
   },
@@ -139,7 +145,7 @@ export default {
 
   methods: {
     messagesRef(roomId) {
-      return roomsRef.doc(roomId).collection("messages");
+      return roomsRef.doc(roomId).collection("Messages");
     },
     resetRooms() {
       this.loadingRooms = true;
@@ -176,10 +182,12 @@ export default {
         console.log(room.data(), roomList);
         const rawUsers = [];
         room.data().users.map(userId => {
+          console.log("userid====-", userId);
           const promise = usersRef
             .doc(userId)
             .get()
             .then(user => {
+              console.log("user.data()", user.data());
               return {
                 ...user.data(),
                 ...{
@@ -242,7 +250,20 @@ export default {
       console.log("  this.rooms ", this.rooms, formattedRooms);
 
       this.rooms = formattedRooms; // this.rooms.concat(formattedRooms);
-      console.log();
+      if (this.rooms.length === 0) {
+        this.createRoom();
+        return;
+      }
+      for (const room of this.rooms) {
+        const inviteUser = room.users.find(x => (x._id = this.invitedUserId));
+        console.log("inviteUser", inviteUser);
+        if (inviteUser !== undefined) {
+          this.selectedRoom = room._id;
+        } else {
+          this.createRoom();
+          return;
+        }
+      }
       this.loadingRooms = false;
       this.rooms.map((room, index) => this.listenLastMessage(room, index));
 
@@ -278,7 +299,8 @@ export default {
 
     formatLastMessage(message) {
       if (!message.timestamp) return;
-      const date = new Date(message.timestamp.seconds * 1000);
+
+      const date = convertTimeStampToDate(message.timestamp.seconds);
       const timestampFormat = isSameDay(date, new Date())
         ? "HH:mm"
         : "DD/MM/YY";
@@ -397,9 +419,10 @@ export default {
 
     async sendMessage({ content, roomId, file, replyMessage }) {
       const message = {
+        contentType: 0,
         sender_id: this.currentUserId,
         content,
-        timestamp: new Date()
+        timestamp: getCurrentTimestamp()
       };
 
       if (file) {
@@ -424,11 +447,29 @@ export default {
       }
 
       const { id } = await this.messagesRef(roomId).add(message);
+      const room = this.rooms.find(x => x.roomId === roomId);
+      await this.messagesRef(roomId)
+        .doc(id)
+        .update({
+          id: id
+        });
+      const isRead = {};
+
+      for (const roomUser of room.users) {
+        console.log("roomUser", roomUser);
+        isRead[roomUser._id] = false;
+      }
+      console.log("isRead", isRead);
+      await roomsRef.doc(roomId).update({
+        isRead: isRead,
+        lastMessage: content,
+        timestamp: getCurrentTimestamp()
+      });
       EventBus.$emit(
         "sendMessage",
         this.rooms.find(room => room.roomId === roomId)
       );
-      console.log("sendMess", { content, roomId, file, replyMessage });
+      console.log("sendMessage", { content, roomId, file, replyMessage });
       if (file) this.uploadFile({ file, messageId: id, roomId });
     },
 
@@ -577,8 +618,9 @@ export default {
 
               const last_changed =
                 timestampFormat === "HH:mm" ? `today, ${timestamp}` : timestamp;
-
+              console.log("userStatus", user);
               user.status = { ...snapshot.val(), last_changed };
+              console.log("==========");
 
               const roomIndex = this.rooms.findIndex(
                 r => room.roomId === r.roomId
@@ -597,36 +639,27 @@ export default {
 
     async createRoom() {
       this.disableForm = true;
-      const user = {
-        _id: this.invitedUserId,
-        username: this.invitedUserId,
-        avatar:
-          "https://vignette.wikia.nocookie.net/teamavatarone/images/4/45/Yoda.jpg/revision/latest?cb=20130224160049"
-      };
-      const isExistUser = await existUser(user._id);
 
-      if (!isExistUser) {
+      const user = await findUser(this.invitedUserId);
+
+      if (user != null) {
         console.log("addUser", user, this.invitedUserId);
         await usersRef.doc(user._id).set(user);
       }
 
-      const id = user._id;
-      var n = id.localeCompare(this.currentUserId);
-      let _id = this.currentUserId + "_" + id;
-      if (n === -1) {
-        _id = id + "_" + this.currentUserId;
-      }
+      // const id = user._id;
+      // var n = id.localeCompare(this.currentUserId);
+      // let _id = this.currentUserId + "_" + id;
+      // if (n === -1) {
+      //   _id = id + "_" + this.currentUserId;
+      // }
       const room = {
-        _id: _id,
-        users: [this.currentUserId, id]
+        users: [this.currentUserId, this.invitedUserId]
       };
-      const isExistRoom = await existRoom(room._id);
-      console.log("isExistRoom", isExistRoom);
-      if (!isExistRoom) {
-        await roomsRef.doc(room._id).set(room);
-      }
-      // await roomsRef.add({ users: [id, this.currentUserId] });
-
+      const { _id } = await roomsRef.add(room);
+      await roomsRef.doc(_id).update({
+        _id: _id
+      });
       this.addNewRoom = false;
       this.addRoomUsername = "";
       this.fetchRooms();

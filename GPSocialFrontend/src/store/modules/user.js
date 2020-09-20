@@ -36,6 +36,9 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
+  SET_EMAIL: (state, email) => {
+    state.email = email
+  },
   SET_USER: (state, user) => {
     state.user = user
   }
@@ -87,11 +90,13 @@ const actions = {
         commit('SET_USER', user)
         const {
           name,
-          avatar
+          avatar,
+          email
         } = user
-        console.log("===========", name, user)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        commit('SET_EMAIL', email)
+
         resolve(data)
       }).catch(error => {
         reject(error)

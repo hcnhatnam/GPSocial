@@ -46,20 +46,9 @@ export default {
       default: function() {
         return [
           {
-            _id: "6R0MijpK6M4AIrwaaCY2",
             username: "Luke",
-            avatar: "https://66.media.tumblr.com/avatar_c6a8eae4303e_512.pnj"
-          },
-          {
-            _id: "SGmFnBZB4xxMv9V4CVlW",
-            username: "Leia",
-            avatar: "https://avatarfiles.alphacoders.com/184/thumb-184913.jpg"
-          },
-          {
-            _id: "6jMsIXUrBHBj7o2cRlau",
-            username: "Yoda",
-            avatar:
-              "https://vignette.wikia.nocookie.net/teamavatarone/images/4/45/Yoda.jpg/revision/latest?cb=20130224160049"
+            avatar: "https://66.media.tumblr.com/avatar_c6a8eae4303e_512.pnj",
+            email: "Luke@gmail.com"
           }
         ];
       }
@@ -98,12 +87,15 @@ export default {
         const isExistUser = await existUser(user._id);
 
         if (!isExistUser) {
-          console.log("Adduser" + user._id);
-          await usersRef.doc(user._id).set({
+          console.log("Adduser", user);
+          const { id } = await usersRef.add({
             _id: user._id,
             username: user.username,
-            avatar: user.avatar
+            avatar: user.avatar,
+            email: user.email
           });
+          await usersRef.doc(id).update({ _id: id });
+          user._id = id;
         }
       }
     },

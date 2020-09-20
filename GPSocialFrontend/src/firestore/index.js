@@ -25,23 +25,55 @@ export const firebase = app;
 export const db = app.firestore();
 export const storageRef = app.storage().ref();
 
-export const usersRef = db.collection("users");
-export const roomsRef = db.collection("chatRooms");
+export const usersRef = db.collection("Users");
+export const roomsRef = db.collection("Conversations");
 
 export const filesRef = storageRef.child("files");
 
 export const dbTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 export const deleteDbField = firebase.firestore.FieldValue.delete();
 
-export async function existUser(_id) {
+export async function findUserByEmail(email) {
+  const user = await usersRef
+    .where('email', '==', email.toLowerCase())
+    .get()
+    .then(querySnapshot => {
+      if (!querySnapshot.empty) {
+        const user = querySnapshot.docs[0].data()
+        return user;
+      } else {
+        return null;
+      }
+    })
+  return user
+}
+export async function findUser(_id) {
   const user = await usersRef.doc(_id).get();
-  console.log(user, user.exists)
-  return user.exists
+  if (user.exists) {
+    return user.data()
+  }
+  return null;
+}
+export async function existUser(_id) {
+  const user = await findUser(_id);
+  return user !== null
 }
 export async function existRoom(roomid) {
   const room = await roomsRef.doc(roomid).get();
   return room.exists
 }
 export async function createUser(user) {
-  await usersRef.doc(user._id).set(user);
+  console.log("createUser", user)
+
+  const {
+    id
+  } = await usersRef.add({
+    username: user.name,
+    avatar: user.avatar,
+    email: user.email
+  });
+  await usersRef.doc(id).update({
+    _id: id
+  });
+  return id;
 }
