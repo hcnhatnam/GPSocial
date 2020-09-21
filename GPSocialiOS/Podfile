@@ -1,0 +1,19 @@
+platform :ios, '13.0'
+use_frameworks!
+inhibit_all_warnings!
+ENV['COCOAPODS_DISABLE_STATS'] = "true"
+
+target 'QuickChat' do
+	
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  pod 'Kingfisher'
+  pod 'Firebase/Firestore'
+  pod 'ALLoadingView'
+  pod 'Google-Maps-iOS-Utils', '~> 3.3.0'
+  pod 'Alamofire', '~> 5.2'
+  pod 'AlamofireImage', '~> 4.1'
+  pod 'SnapKit', '~> 5.0.0'
+
+end
