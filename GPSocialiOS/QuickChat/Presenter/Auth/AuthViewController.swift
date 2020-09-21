@@ -89,6 +89,13 @@ extension AuthViewController {
         case .success: self?.dismiss(animated: true, completion: nil)
       }
     }
+    
+    /// Gọi lên Nam server
+    LDUserManager().resigerUser(user: user) { errorMessage in
+      if let _ = errorMessage {
+        self.showAlert(title: "Alert", message: "We has error when call Nam'server", completion: nil)
+      }
+    }
   }
   
   @IBAction func login(_ sender: Any) {
