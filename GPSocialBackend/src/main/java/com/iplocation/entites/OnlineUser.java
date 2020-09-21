@@ -5,23 +5,25 @@
  */
 package com.iplocation.entites;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  *
  * @author namhcn
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-public class UserApp {
+public class OnlineUser {
 
-    private String name;
-    private String roles;
-    private String introduction;
-    private String avatar;
-    private String ip;
-    private String token;
+    private User user;
+    private long lastPing;
+    private LocationInfo locationInfo;
+    private Map<String, String> extenInfo;
+
 }

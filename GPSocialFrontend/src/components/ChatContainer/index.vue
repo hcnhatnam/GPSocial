@@ -317,7 +317,7 @@ export default {
           content,
           timestamp,
           date: message.timestamp.seconds,
-          seen: message.sender_id === this.currentUserId ? message.seen : null,
+          // seen: message.sender_id === this.currentUserId ? message.seen : null,
           new:
             message.sender_id !== this.currentUserId &&
             (!message.seen || !message.seen[this.currentUserId])
@@ -389,11 +389,11 @@ export default {
         message.data().sender_id !== this.currentUserId &&
         (!message.data().seen || !message.data().seen[this.currentUserId])
       ) {
-        this.messagesRef(room.roomId)
-          .doc(message.id)
-          .update({
-            [`seen.${this.currentUserId}`]: new Date()
-          });
+        // this.messagesRef(room.roomId)
+        //   .doc(message.id)
+        //   .update({
+        //     [`seen.${this.currentUserId}`]: new Date()
+        //   });
       }
     },
 

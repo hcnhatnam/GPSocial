@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "137047191722",
+    "firebase_url": "https://iplocationchat.firebaseio.com",
+    "project_id": "iplocationchat",
+    "storage_bucket": "iplocationchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137047191722:android:93f57c05afd0211e8160d3",
+        "android_client_info": {
+          "package_name": "com.iplocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137047191722-c2861c419jcm0sgvh3qljb6io8s4upu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8jo9tItT2WumRwCClRub6jVOisKPo-ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137047191722-c2861c419jcm0sgvh3qljb6io8s4upu3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "137047191722-3r70q4ftl7dvndbraa6q5o7ld2ckvjo1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.duydl.iplocationchat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

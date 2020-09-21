@@ -9,15 +9,26 @@ import "firebase/storage";
 //   JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG_PUBLIC)
 
 // Your web app's Firebase configuration
+// var firebaseConfig = {
+//   apiKey: "AIzaSyDOssJBK7T7jKB1-XStyxKyPKoZ4OUH668",
+//   authDomain: "absolute-nuance-183415.firebaseapp.com",
+//   databaseURL: "https://absolute-nuance-183415.firebaseio.com",
+//   projectId: "absolute-nuance-183415",
+//   storageBucket: "absolute-nuance-183415.appspot.com",
+//   messagingSenderId: "148877626854",
+//   appId: "1:148877626854:web:009965e2389eac9c289a27",
+//   measurementId: "G-X9QYYB490H"
+// };
+
 var firebaseConfig = {
-  apiKey: "AIzaSyDOssJBK7T7jKB1-XStyxKyPKoZ4OUH668",
-  authDomain: "absolute-nuance-183415.firebaseapp.com",
-  databaseURL: "https://absolute-nuance-183415.firebaseio.com",
-  projectId: "absolute-nuance-183415",
-  storageBucket: "absolute-nuance-183415.appspot.com",
-  messagingSenderId: "148877626854",
-  appId: "1:148877626854:web:009965e2389eac9c289a27",
-  measurementId: "G-X9QYYB490H"
+  apiKey: "AIzaSyCHPJjbTdV-BavOsq5cwrBLa3wB03lLu5A",
+  authDomain: "iplocationchat.firebaseapp.com",
+  databaseURL: "https://iplocationchat.firebaseio.com",
+  projectId: "iplocationchat",
+  storageBucket: "iplocationchat.appspot.com",
+  messagingSenderId: "137047191722",
+  appId: "1:137047191722:web:98a8e62f16f5d37f8160d3",
+  measurementId: "G-6YGR56W3ES"
 };
 // Initialize Firebase
 app.initializeApp(firebaseConfig);

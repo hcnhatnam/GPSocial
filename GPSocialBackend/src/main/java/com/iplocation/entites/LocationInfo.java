@@ -5,7 +5,6 @@
  */
 package com.iplocation.entites;
 
-import com.iplocation.controller.IpController;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

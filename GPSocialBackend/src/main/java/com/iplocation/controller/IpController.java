@@ -81,19 +81,19 @@ public class IpController {
         return locationInfo;
     }
 
-    @GetMapping("/people")
-    public ResultObject getPeople() {
-        ResultObject resultObject = new ResultObject(0, "");
-        try {
-            resultObject.putData("userofapp", LoginController.USER_OF_APP);
-
-        } catch (Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
-            resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage(ex.getMessage());
-        }
-        return resultObject;
-    }
+//    @GetMapping("/people")
+//    public ResultObject getPeople() {
+//        ResultObject resultObject = new ResultObject(0, "");
+//        try {
+//            resultObject.putData("userofapp", LoginController.USER_OF_APP);
+//
+//        } catch (Exception ex) {
+//            LOGGER.error(ex.getMessage(), ex);
+//            resultObject.setError(ResultObject.ERROR);
+//            resultObject.setMessage(ex.getMessage());
+//        }
+//        return resultObject;
+//    }
 
     @GetMapping("/ip")
     public ResultObject ipInfo(@RequestParam(value = "ip", defaultValue = "") String ip) {

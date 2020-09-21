@@ -38,8 +38,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-reactor-netty
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.3.3.RELEASE'
 
+    compile 'com.google.firebase:firebase-admin:7.0.0'
 }
 
 test {
     useJUnitPlatform()
+    testLogging.showStandardStreams = true
 }
