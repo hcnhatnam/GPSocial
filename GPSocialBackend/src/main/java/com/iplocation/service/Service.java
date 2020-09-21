@@ -5,8 +5,6 @@
  */
 package com.iplocation.service;
 
-import com.google.firebase.database.utilities.Pair;
-import com.ip2location.IPResult;
 import com.iplocation.entites.OnlineUser;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.entites.User;
@@ -36,6 +34,9 @@ public class Service {
                 return obj.getEmail();
             }
         };
-        IPResult iPResult;
+    }
+   
+    public static void main(String[] args) {
+
     }
 }

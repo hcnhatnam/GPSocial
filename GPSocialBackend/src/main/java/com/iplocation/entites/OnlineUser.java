@@ -5,6 +5,7 @@
  */
 package com.iplocation.entites;
 
+import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,22 @@ public class OnlineUser {
 
     private User user;
     private long lastPing;
+    private String ip;
     private LocationInfo locationInfo;
     private Map<String, String> extenInfo;
+
+    public OnlineUser(User user, long lastPing, String ip) {
+        this.user = user;
+        this.lastPing = lastPing;
+        this.ip = ip;
+        extenInfo = new HashMap<>();
+    }
+
+    public OnlineUser(User user, long lastPing, LocationInfo locationInfo) {
+        this.user = user;
+        this.lastPing = lastPing;
+        this.locationInfo = locationInfo;
+        extenInfo = new HashMap<>();
+    }
 
 }

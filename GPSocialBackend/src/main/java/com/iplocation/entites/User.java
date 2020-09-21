@@ -17,7 +17,6 @@ import lombok.Setter;
  * @author namhcn
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class User {
