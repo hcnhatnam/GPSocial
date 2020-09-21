@@ -8,7 +8,7 @@
 
 import Foundation
 
-let defaultAvatarName = "profile pic"
+let defaultAvatarName = "defaultAvatarOwner"
 let homeIconName = "location-pin"
 
 import UIKit

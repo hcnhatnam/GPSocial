@@ -66,10 +66,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     /// Setup ownermarker
     ownerMarker.icon = GMSMarker.markerImage(with: .red)
     ownerMarker.map = googleMapView
-    ownerMarker.iconView = UIImageView()
-    ownerMarker.iconView?.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-    ownerMarker.iconView?.layer.cornerRadius = 25.0
-    ownerMarker.iconView?.clipsToBounds = true
+    
+    let ownerAvatart = UIImageView(image: UIImage(named: defaultAvatarName))
+    let avatarWitdh: CGFloat = 30
+    ownerAvatart.frame = CGRect(x: 0, y: 0, width: avatarWitdh, height: avatarWitdh)
+    ownerAvatart.layer.cornerRadius = avatarWitdh/2
+    ownerAvatart.clipsToBounds = true
+    ownerAvatart.layer.borderWidth = 1.0
+    ownerAvatart.layer.borderColor = UIColor.black.cgColor
+
+    ownerMarker.iconView = ownerAvatart
     ownerMarker.tracksViewChanges = true
     markOwnerLocationOnMapView()
   }
