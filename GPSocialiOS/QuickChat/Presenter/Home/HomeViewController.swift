@@ -125,6 +125,8 @@ class HomeViewController: UIViewController {
   }
   
   @objc private func didTapPersonalInfoButton() {
-    
+    let vc = IPInforViewController()
+    vc.modalPresentationStyle = .pageSheet
+    show(vc, sender: self)
   }
 }

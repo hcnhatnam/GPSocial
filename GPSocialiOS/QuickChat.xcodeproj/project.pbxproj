@@ -64,6 +64,7 @@
 		F23A69B92517329E00886398 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A69B82517329E00886398 /* Size.swift */; };
 		F23A69BC2517330A00886398 /* ViewCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A69BB2517330A00886398 /* ViewCreator.swift */; };
 		F23A69BF2517332B00886398 /* ButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A69BE2517332B00886398 /* ButtonWithImage.swift */; };
+		F25A79E42518D2980061ACA7 /* IPInforViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25A79E32518D2980061ACA7 /* IPInforViewController.swift */; };
 		F28145A4251604B600D884E0 /* IP2LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28145A3251604B600D884E0 /* IP2LocationService.swift */; };
 		F28145A8251716A800D884E0 /* LDImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28145A7251716A800D884E0 /* LDImageView.swift */; };
 		F28145CB2517181F00D884E0 /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28145CA2517181F00D884E0 /* GlobalVariables.swift */; };
@@ -135,6 +136,7 @@
 		F23A69B82517329E00886398 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		F23A69BB2517330A00886398 /* ViewCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCreator.swift; sourceTree = "<group>"; };
 		F23A69BE2517332B00886398 /* ButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithImage.swift; sourceTree = "<group>"; };
+		F25A79E32518D2980061ACA7 /* IPInforViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPInforViewController.swift; sourceTree = "<group>"; };
 		F28145A3251604B600D884E0 /* IP2LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IP2LocationService.swift; sourceTree = "<group>"; };
 		F28145A7251716A800D884E0 /* LDImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDImageView.swift; sourceTree = "<group>"; };
 		F28145CA2517181F00D884E0 /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 		22EDC20A226C5229008F1BBC /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				F25A79E22518D27F0061ACA7 /* IPInfo */,
 				F28145A62517168E00D884E0 /* CustomViews */,
 				F2DBC7F32515FA600060864F /* Map */,
 				F2AD57092515E4CB009BA8F7 /* Home */,
@@ -394,6 +397,14 @@
 				C1078AA3D2FF8C5707E873E0 /* Pods_QuickChat.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F25A79E22518D27F0061ACA7 /* IPInfo */ = {
+			isa = PBXGroup;
+			children = (
+				F25A79E32518D2980061ACA7 /* IPInforViewController.swift */,
+			);
+			path = IPInfo;
 			sourceTree = "<group>";
 		};
 		F28145A62517168E00D884E0 /* CustomViews */ = {
@@ -628,6 +639,7 @@
 				22DE3D14234353E90062B9F7 /* UIFontExtension.swift in Sources */,
 				F23A69B92517329E00886398 /* Size.swift in Sources */,
 				F23A69B62517324900886398 /* Constants.swift in Sources */,
+				F25A79E42518D2980061ACA7 /* IPInforViewController.swift in Sources */,
 				F28145A4251604B600D884E0 /* IP2LocationService.swift in Sources */,
 				22EDC227226C58E4008F1BBC /* UIViewExtension.swift in Sources */,
 			);
