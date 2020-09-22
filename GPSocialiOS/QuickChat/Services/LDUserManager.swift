@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 
 typealias ErrorMessage = String
+let serverUrl = "http://35.198.220.200:8765"
+let successCode = 0
 
 class LDUserManager {
   
@@ -18,17 +20,17 @@ class LDUserManager {
     guard let email = user.email, let password = user.password else { completion?("Email nil or password nil"); return }
     
     let parameters: Dictionary<String, Any> = [
-      "email": email,    // chú ý refactor chỗ này
+      "email": email,
       "username": email,
       "profilepiclink": user.profilePicLink ?? "",
       "password": password
     ]
     
-    let registerUserUrl = "http://35.198.220.200:8765/user/register/"
+    let registerUserUrl = "\(serverUrl)/user/register/"
     AF.request(registerUserUrl, method: .post, parameters:parameters).responseJSON { (response) in
       if let json = response.value as! [String : Any]? {
         if let errorcode = json["error"] as? Int {
-          if errorcode == 0 {
+          if errorcode == successCode {
             completion?(nil)
           } else {
             completion?("Failed")
@@ -38,6 +40,37 @@ class LDUserManager {
         }
       } else {
         completion?("Request failed")
+      }
+    }
+  }
+    
+  func login(user: ObjectUser, completion: ((String?) -> ())?) {
+    if let password = OwnerInfo.shared.password {
+      user.password = password
+    } else {
+      /// Tại sao đéo có password in UserDefault mà login làm gì?
+      fatalError()
+    }
+    
+    guard let email = user.email, let password = user.password else { completion?("Login failed: Email nil or password nil"); return }
+
+    let loginUrl = "\(serverUrl)/user/login/"
+    let parameters: Dictionary<String, Any> = [
+      "email": email,
+      "password": password
+    ]
+    AF.request(loginUrl, method: .post, parameters: parameters).responseJSON { (response) in
+      if let json = response.value as? [String:Any] {
+        if let errorCode = json["error"] as? Int {
+          if errorCode == successCode {
+            print("duydl: Login Nam thành công")
+            completion?(nil)
+          } else {
+            completion?("Login Failed")
+          }
+        }
+      } else {
+        completion?("Login Failed")
       }
     }
   }

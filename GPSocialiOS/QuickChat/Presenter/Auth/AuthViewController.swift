@@ -44,6 +44,7 @@ class AuthViewController: UIViewController {
   private var selectedImage: UIImage?
   private let manager = UserManager()
   private let imageService = ImagePickerService()
+  private let userManagerWithNamServer = LDUserManager()
   
   //MARK: Lifecycle
   override func viewDidAppear(_ animated: Bool) {
@@ -86,12 +87,18 @@ extension AuthViewController {
       ThemeService.showLoading(false)
       switch response {
         case .failure: self?.showAlert()
-        case .success: self?.dismiss(animated: true, completion: nil)
+        case .success:
+          self?.dismiss(animated: true, completion: nil)
+          
+          /// Sau khi register firebase thành công, gọi register lên Nam server.
+          self?.registerToNamServer(user: user)
+          OwnerInfo.shared.didRegisterWithPassword(newPassword: user.password!)
       }
     }
-    
-    /// Gọi lên Nam server
-    LDUserManager().resigerUser(user: user) { errorMessage in
+  }
+  
+  func registerToNamServer(user: ObjectUser) {
+    userManagerWithNamServer.resigerUser(user: user) { errorMessage in
       if let _ = errorMessage {
         self.showAlert(title: "Alert", message: "We has error when call Nam'server", completion: nil)
       }

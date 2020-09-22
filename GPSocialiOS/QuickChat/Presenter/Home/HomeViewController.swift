@@ -15,8 +15,11 @@ class HomeViewController: UIViewController {
   let chatWithStrangersButton = UIButton()
   let chatWithFriendButton = UIButton() 
   let personalInfoButton = UIButton()
-  
   let iconImageView = UIImageView()
+  
+  private let userManager = UserManager()
+  private var currentUser: ObjectUser?
+  private let userManagerNamServer = LDUserManager()
   
   // MARK: Life cycle
   
@@ -26,6 +29,7 @@ class HomeViewController: UIViewController {
           
     setupNavigationController()
     setupViews()
+    fetchProfile()
   }
   
   func setupViews() {
@@ -106,6 +110,23 @@ class HomeViewController: UIViewController {
     
     /// Hide naviagtionbar
     navigationController?.navigationBar.isHidden = true
+  }
+  
+  func fetchProfile() {
+    userManager.currentUserData {[weak self] user in
+      guard let user = user else {return}
+      
+      self?.currentUser = user
+      self?.loginToNamServer(user: user)
+    }
+  }
+  
+  func loginToNamServer(user: ObjectUser) {
+    userManagerNamServer.login(user: user) { (messageError) in
+      if let messageError = messageError {
+        self.showAlert(title: "Alert", message: messageError, completion: nil)
+      }
+    }
   }
   
   // MARK: Events handler
