@@ -64,6 +64,7 @@ class LDUserManager {
         if let errorCode = json["error"] as? Int {
           if errorCode == successCode {
             print("duydl: Login Nam thành công")
+            self.startPingToServer()
             completion?(nil)
           } else {
             completion?("Login Failed")
@@ -71,6 +72,48 @@ class LDUserManager {
         }
       } else {
         completion?("Login Failed")
+      }
+    }
+  }
+  
+  func startPingToServer() {
+    let interval: Double = 5
+    Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
+      self._ping()
+    }
+  }
+  
+  func _ping() {
+    guard let email = OwnerInfo.shared.email else {
+      assert(false)
+      return
+    }
+    
+    let pingUrl = "\(serverUrl)/user/ping/"
+    let parameters: Dictionary<String, Any> = [
+      "email": email,
+    ]
+    AF.request(pingUrl, parameters: parameters).response {response in
+      switch response.result {
+      case .success(let data):
+        if let data = data {
+          do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+              if let errorCode = json["error"] as? Int {
+                if errorCode == successCode {
+                  print("Ping success!")
+                }
+              }
+            }
+          } catch let error as NSError {
+            print(error)
+            fatalError()
+          }
+        }
+        
+      case .failure(let error):
+        print(error)
+        fatalError()
       }
     }
   }

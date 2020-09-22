@@ -92,7 +92,7 @@ extension AuthViewController {
           
           /// Sau khi register firebase thành công, gọi register lên Nam server.
           self?.registerToNamServer(user: user)
-          OwnerInfo.shared.didRegisterWithPassword(newPassword: user.password!)
+          OwnerInfo.shared.didRegisterWithUser(user: user)
       }
     }
   }

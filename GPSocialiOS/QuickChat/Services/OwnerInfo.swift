@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 
 fileprivate let kUserPassword = "kUserPassword"
+fileprivate let kUserEmail = "kUserEmail"
 
 class OwnerInfo {
   
@@ -18,20 +19,23 @@ class OwnerInfo {
   //MARK: Readonly Prop
 
   public private(set) var password: String?
-  
+  public private(set) var email: String?
+
   //MARK: Public
   
   func clearPasswordInUserDefault() {
     userDefault.setValue(nil, forKey: kUserPassword)
   }
   
-  func didRegisterWithPassword(newPassword: String) {
+  func didRegisterWithUser(user: ObjectUser) {
     
     // UpdateMemory
-    password = newPassword
+    password = user.password!
+    email = user.email!
     
     // Update LocalDisk
     userDefault.set(password,forKey: kUserPassword)
+    userDefault.set(email,forKey: kUserEmail)
   }
 
   // MARK: Private
@@ -47,6 +51,11 @@ class OwnerInfo {
     // Password
     if let password = userDefault.string(forKey: kUserPassword) {
       self.password = password
+    }
+
+    // Email
+    if let email = userDefault.string(forKey: kUserEmail) {
+      self.email = email
     }
   }
 }
