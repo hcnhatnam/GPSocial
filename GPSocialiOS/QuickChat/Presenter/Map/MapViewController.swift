@@ -30,6 +30,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   private var currentUser: ObjectUser?
   private let userManager = UserManager()
   private let ownerMarker = GMSMarker()
+  private let sv2UserManager = LDUserManager()
   
   override func loadView() {
     /// Setup camera
@@ -45,6 +46,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     setupGoogleMap()
     fetchProfile()
     fetchConversations()
+    startTimerGetOnlineUsers()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +63,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     clusterManager.setMapDelegate(self)
     
     /// Mark owner location on GoogleMapView
-    markRandom()
+    /// markRandom()
     
     /// Setup ownermarker
     ownerMarker.icon = GMSMarker.markerImage(with: .red)
@@ -78,6 +80,26 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     ownerMarker.iconView = ownerAvatart
     ownerMarker.tracksViewChanges = true
     markOwnerLocationOnMapView()
+  }
+  
+  func startTimerGetOnlineUsers() {
+    sv2UserManager.startPingToServer { (result) in
+      switch result {
+      case .success(let users):
+        self.markListUserOnMap(users: users)
+      case .failure(let error):
+        print(error)
+      }
+    }
+  }
+  
+  func markListUserOnMap(users: [UserEntity]) {
+    print("Mark \(users.count) users on Map")
+    for user in users {
+      if let position = user.position {
+        markOnMapViewWithPosition(position, .red)
+      }
+    }
   }
   
   // MARK: - GMUMapViewDelegate

@@ -8,10 +8,20 @@
 
 import Foundation
 import Alamofire
+import GoogleMaps
 
 typealias ErrorMessage = String
 let serverUrl = "http://35.198.220.200:8765"
 let successCode = 0
+
+struct UserEntity {
+  var id: String?
+  var email: String?
+  var profilePicLink: String?
+  var username: String?
+  var position: LDMapPosition?
+}
+
 
 class LDUserManager {
   
@@ -64,7 +74,6 @@ class LDUserManager {
         if let errorCode = json["error"] as? Int {
           if errorCode == successCode {
             print("duydl: Login Nam thành công")
-            self.startPingToServer()
             completion?(nil)
           } else {
             completion?("Login Failed")
@@ -75,21 +84,23 @@ class LDUserManager {
       }
     }
   }
+    
+  // MARK: Private
   
-  func startPingToServer() {
+  func startPingToServer(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
     let interval: Double = 5
     Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
-      self._ping()
+      self._ping(completion: completion)
     }
   }
-  
-  func _ping() {
+
+  func _ping(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
     guard let email = OwnerInfo.shared.email else {
       assert(false)
       return
     }
     
-    let pingUrl = "\(serverUrl)/user/ping/"
+    let pingUrl = "\(serverUrl)/user/onlineusers/"
     let parameters: Dictionary<String, Any> = [
       "email": email,
     ]
@@ -101,20 +112,56 @@ class LDUserManager {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
               if let errorCode = json["error"] as? Int {
                 if errorCode == successCode {
-                  print("Ping success!")
+                  if let data = json["data"] as? [String: Any] {
+                    if let onlineusers = data["onlineUsers"] as? [String: Any] {
+                      let users = self.parseUserJsonsDictToUserEntities(onlineusers)
+                      completion(.success(users))
+                    }
+                  }
                 }
               }
             }
           } catch let error as NSError {
             print(error)
-            fatalError()
+            completion(.failure(error))
           }
         }
         
       case .failure(let error):
         print(error)
-        fatalError()
+        completion(.failure(error))
       }
     }
+  }
+  
+  func parseUserJsonsDictToUserEntities(_ userjsons: [String: Any]) -> [UserEntity] {
+    var userEntities: [UserEntity] = []
+    
+    for key in userjsons.keys {
+      if let userDict = userjsons[key],
+         let json = userDict as? [String : Any] {
+        let userEntity = parseToUserEntity(userjson: json)
+        userEntities.append(userEntity)
+      }
+    }
+  
+    return userEntities
+  }
+  
+  func parseToUserEntity(userjson: [String: Any]) -> UserEntity {
+    var userEntity = UserEntity()
+    
+    if let locationInfo = userjson["locationInfo"] as?  [String:Any] {
+      var position = LDMapPosition()
+      if let lat = locationInfo["latitude"] as? Double {
+        position.latitude = lat
+      }
+      if let long = locationInfo["longitude"] as? Double {
+        position.longitude = long
+      }
+      userEntity.position = position
+    }
+    
+    return userEntity
   }
 }

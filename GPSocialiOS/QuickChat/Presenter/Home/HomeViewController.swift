@@ -27,6 +27,7 @@ class HomeViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
           
+    let _ = OwnerInfo.shared
     setupNavigationController()
     setupViews()
     fetchProfile()
