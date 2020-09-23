@@ -26,6 +26,7 @@ struct UserEntity {
 class LDUserManager {
   
   func resigerUser(user: ObjectUser,completion: ((String?) -> ())?) {
+    print("duydl: Register")
     
     guard let email = user.email, let password = user.password else { completion?("Email nil or password nil"); return }
     
@@ -118,6 +119,8 @@ class LDUserManager {
                       completion(.success(users))
                     }
                   }
+                } else {
+                  assert(false)
                 }
               }
             }
@@ -162,6 +165,15 @@ class LDUserManager {
       userEntity.position = position
     }
     
+    if let user = userjson["user"] as? [String:Any] {
+      if let avtLink = user["profilePicLink"] as? String {
+        if avtLink != "" {
+          userEntity.profilePicLink = avtLink
+        }
+      }
+    }
+    
+    print("Postion: lat: \(String(describing: userEntity.position?.latitude)), long: \(String(describing: userEntity.position?.longitude))")
     return userEntity
   }
 }

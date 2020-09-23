@@ -36,9 +36,33 @@ class InitialViewController: UIViewController {
     if isNotLogined {
       vc = UIStoryboard.initial(storyboard: .auth)
     } else {
-      //vc = UIStoryboard.initial(storyboard: .conversations)
-      let homeVc = HomeViewController()
-      vc = UINavigationController(rootViewController: homeVc)
+        
+      /// MApViewController
+      let mapVC = MapViewController()
+      let mapItem = UITabBarItem()
+      mapItem.title = "GPSocial"
+      mapItem.image = UIImage(named: "icon1")
+      mapVC.tabBarItem = mapItem
+
+      /// Chat
+      let chatVC = UIStoryboard.initial(storyboard: .conversations)
+      let chatBoxItem = UITabBarItem()
+      chatBoxItem.title = "Chat Box"
+      chatBoxItem.image = UIImage(named: "icon1")
+      chatVC.tabBarItem = chatBoxItem
+      
+      
+      /// Info
+      let infoVC = IPInforViewController()
+      let infoItem = UITabBarItem()
+      infoItem.title = "Detail"
+      infoItem.image = UIImage(named: "icon1")
+      infoVC.tabBarItem = infoItem
+      
+      
+      let tabBarController = UITabBarController()
+      tabBarController.viewControllers = [mapVC, chatVC, infoVC]
+      vc = tabBarController
     }
     
     vc.modalPresentationStyle = .fullScreen

@@ -46,7 +46,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     setupGoogleMap()
     fetchProfile()
     fetchConversations()
-    startTimerGetOnlineUsers()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -79,13 +78,31 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
 
     ownerMarker.iconView = ownerAvatart
     ownerMarker.tracksViewChanges = true
-    markOwnerLocationOnMapView()
+    //markOwnerLocationOnMapView()
+  }
+  
+  func markerImageViewWithUrl(url: String?) -> UIImageView {
+    let imgView = UIImageView()
+    if let url = url {
+      imgView.setImage(url: URL(string: url))
+    } else {
+      imgView.image = UIImage(named: "defaultAvatarName")
+    }
+    let avatarWitdh: CGFloat = 30
+    imgView.frame = CGRect(x: 0, y: 0, width: avatarWitdh, height: avatarWitdh)
+    imgView.layer.cornerRadius = avatarWitdh/2
+    imgView.clipsToBounds = true
+    imgView.layer.borderWidth = 1.0
+    imgView.layer.borderColor = UIColor.black.cgColor
+   
+    return imgView
   }
   
   func startTimerGetOnlineUsers() {
     sv2UserManager.startPingToServer { (result) in
       switch result {
       case .success(let users):
+        self.googleMapView.clear()
         self.markListUserOnMap(users: users)
       case .failure(let error):
         print(error)
@@ -96,8 +113,26 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   func markListUserOnMap(users: [UserEntity]) {
     print("Mark \(users.count) users on Map")
     for user in users {
-      if let position = user.position {
-        markOnMapViewWithPosition(position, .red)
+      markOnMapWithUser(user: user)
+    }
+  }
+  
+  func markOnMapWithUser(user: UserEntity) {
+    if let position = user.position {
+      let marker = GMSMarker()
+      marker.position = position
+      marker.iconView = self.markerImageViewWithUrl(url: user.profilePicLink)
+      
+      marker.map = googleMapView
+    }
+  }
+  
+  func loginToNamServer(user: ObjectUser) {
+    sv2UserManager.login(user: user) { (messageError) in
+      if let messageError = messageError {
+        self.showAlert(title: "Alert", message: messageError, completion: nil)
+      } else {
+        self.startTimerGetOnlineUsers()
       }
     }
   }
@@ -166,11 +201,15 @@ extension MapViewController {
   
   func fetchProfile() {
     userManager.currentUserData {[weak self] user in
-      self?.currentUser = user
-      
-      /// Update ownerMarker after fetch done currentUser
-      if let urlString = user?.profilePicLink {
-        self?.updateOwnerMarkerIconWithUrl(url: urlString)
+      if let user = user {
+        self?.currentUser = user
+        
+        /// Update ownerMarker after fetch done currentUser
+        if let urlString = user.profilePicLink {
+          self?.updateOwnerMarkerIconWithUrl(url: urlString)
+        }
+        
+        self?.loginToNamServer(user: user)
       }
     }
   }
