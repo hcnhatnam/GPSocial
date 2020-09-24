@@ -41,7 +41,7 @@ class InitialViewController: UIViewController {
       let mapVC = MapViewController()
       let mapItem = UITabBarItem()
       mapItem.title = "GPSocial"
-      mapItem.image = UIImage(named: "icon1")
+      mapItem.image = UIImage(named: "gpsicon")
       mapVC.tabBarItem = mapItem
 
       /// Chat
