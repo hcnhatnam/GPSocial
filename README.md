@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://github.com/Juvenal-Yescas/ProxyDetector-Firewall/">
+  <a href="https://github.com/hcnhatnam/GPSocial">
     <img src="https://f5-group-zf.zdn.vn/2711ef554d17a249fb06/2543873291198976094" alt="ProxyDetector Firewall logo" width="400">
   </a>
 </p>
