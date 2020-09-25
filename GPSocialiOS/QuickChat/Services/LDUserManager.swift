@@ -13,6 +13,7 @@ import GoogleMaps
 typealias ErrorMessage = String
 let serverUrl = "http://35.198.220.200:8765"
 let successCode = 0
+let durationLoopReFetchOnlineUsers: Double = 5
 
 struct UserEntity {
   var id: String?
@@ -25,7 +26,7 @@ struct UserEntity {
 
 class LDUserManager {
   
-  func resigerUser(user: ObjectUser,completion: ((String?) -> ())?) {
+  public func resigerUser(user: ObjectUser,completion: ((String?) -> ())?) {
     print("duydl: Register")
     
     guard let email = user.email, let password = user.password else { completion?("Email nil or password nil"); return }
@@ -55,7 +56,7 @@ class LDUserManager {
     }
   }
     
-  func login(user: ObjectUser, completion: ((String?) -> ())?) {
+  public func login(user: ObjectUser, completion: ((String?) -> ())?) {
     if let password = OwnerInfo.shared.password {
       user.password = password
     } else {
@@ -85,17 +86,16 @@ class LDUserManager {
       }
     }
   }
-    
-  // MARK: Private
   
-  func startPingToServer(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-    let interval: Double = 5
-    Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
-      self._ping(completion: completion)
-    }
+  public func fetchOnlineusers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
+    Timer.scheduledTimer(withTimeInterval: durationLoopReFetchOnlineUsers, repeats: true) { _ in
+      self._requestListOnlineUsers(completion: completion)
+    }.fire()
   }
 
-  func _ping(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
+  // MARK: Private
+  
+  private func _requestListOnlineUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
     guard let email = OwnerInfo.shared.email else {
       assert(false)
       return
@@ -105,45 +105,49 @@ class LDUserManager {
     let parameters: Dictionary<String, Any> = [
       "email": email,
     ]
+    
     AF.request(pingUrl, parameters: parameters).response {response in
       switch response.result {
       case .success(let data):
-        if let data = data {
-          do {
-            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-              if let errorCode = json["error"] as? Int {
-                if errorCode == successCode {
-                  if let data = json["data"] as? [String: Any] {
-                    if let onlineusers = data["onlineUsers"] as? [String: Any] {
-                      let users = self.parseUserJsonsDictToUserEntities(onlineusers)
-                      completion(.success(users))
-                    }
+        guard let data = data else {
+          /// Sao đéo có data?
+          assert(false)
+          return
+        }
+        
+        do {
+          if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            if let errorCode = json["error"] as? Int {
+              if errorCode == successCode {
+                if let data = json["data"] as? [String: Any] {
+                  if let onlineusers = data["onlineUsers"] as? [String: Any] {
+                    let users = self._parseDataJsonsDictToUserEntities(onlineusers)
+                    completion(.success(users))
                   }
-                } else {
-                  assert(false)
                 }
+              } else {
+                assert(false)
               }
             }
-          } catch let error as NSError {
-            print(error)
-            completion(.failure(error))
           }
+        } catch let error as NSError {
+          print(error)
+          completion(.failure(error))
         }
         
       case .failure(let error):
-        print(error)
         completion(.failure(error))
       }
     }
   }
   
-  func parseUserJsonsDictToUserEntities(_ userjsons: [String: Any]) -> [UserEntity] {
+  private func _parseDataJsonsDictToUserEntities(_ userjsons: [String: Any]) -> [UserEntity] {
     var userEntities: [UserEntity] = []
     
-    for key in userjsons.keys {
-      if let userDict = userjsons[key],
+    for userEmail in userjsons.keys {
+      if let userDict = userjsons[userEmail],
          let json = userDict as? [String : Any] {
-        let userEntity = parseToUserEntity(userjson: json)
+        let userEntity = _parseToUserEntity(userjson: json)
         userEntities.append(userEntity)
       }
     }
@@ -151,9 +155,10 @@ class LDUserManager {
     return userEntities
   }
   
-  func parseToUserEntity(userjson: [String: Any]) -> UserEntity {
+  private func _parseToUserEntity(userjson: [String: Any]) -> UserEntity {
     var userEntity = UserEntity()
     
+    /// Location
     if let locationInfo = userjson["locationInfo"] as?  [String:Any] {
       var position = LDMapPosition()
       if let lat = locationInfo["latitude"] as? Double {
@@ -165,6 +170,7 @@ class LDUserManager {
       userEntity.position = position
     }
     
+    /// Avatar URL
     if let user = userjson["user"] as? [String:Any] {
       if let avtLink = user["profilePicLink"] as? String {
         if avtLink != "" {

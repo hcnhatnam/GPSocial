@@ -78,56 +78,50 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
 
     ownerMarker.iconView = ownerAvatart
     ownerMarker.tracksViewChanges = true
-    //markOwnerLocationOnMapView()
+    _markOwnerLocationOnMapView()
   }
-  
-  func markerImageViewWithUrl(url: String?) -> UIImageView {
-    let imgView = UIImageView()
-    if let url = url {
-      imgView.setImage(url: URL(string: url))
-    } else {
-      imgView.image = UIImage(named: "defaultAvatarName")
-    }
-    let avatarWitdh: CGFloat = 30
-    imgView.frame = CGRect(x: 0, y: 0, width: avatarWitdh, height: avatarWitdh)
-    imgView.layer.cornerRadius = avatarWitdh/2
-    imgView.clipsToBounds = true
-    imgView.layer.borderWidth = 1.0
-    imgView.layer.borderColor = UIColor.black.cgColor
-   
-    return imgView
-  }
-  
-  func startTimerGetOnlineUsers() {
-    sv2UserManager.startPingToServer { (result) in
-      switch result {
-      case .success(let users):
-        self.googleMapView.clear()
-        self.markListUserOnMap(users: users)
-      case .failure(let error):
-        print(error)
-      }
-    }
-  }
-  
-  func markListUserOnMap(users: [UserEntity]) {
+    
+  // MARK: Google Map Marker
+
+  private func _markListUserOnMap(users: [UserEntity]) {
     print("Mark \(users.count) users on Map")
     for user in users {
-      markOnMapWithUser(user: user)
+      _markOnMapWithUser(user: user)
     }
   }
   
-  func markOnMapWithUser(user: UserEntity) {
+  private func _markOnMapWithUser(user: UserEntity) {
     if let position = user.position {
       let marker = GMSMarker()
       marker.position = position
       marker.iconView = self.markerImageViewWithUrl(url: user.profilePicLink)
       
       marker.map = googleMapView
+      //clusterManager.add(marker)
     }
   }
   
-  func loginToNamServer(user: ObjectUser) {
+  private func _markOwnerLocationOnMapView() {
+    ip2LocationService.loadOwnerIP { result in
+      switch result {
+      case .success(let ownerIP):
+        self.ip2LocationService.getLocationOfIP(ip: ownerIP) { (result) in
+          switch result {
+          case .success(let position):
+            self.ownerMarker.position = position
+          case .failure(let error):
+            self.showAlert(title: "Alert", message: error.localizedDescription, completion: nil)
+          }
+        }
+      case .failure(let error):
+        self.showAlert(title: "Alert", message: error.localizedDescription, completion: nil)
+      }
+    }
+  }
+  
+  // MARK: Nam's server
+  
+  private func loginToNamServer(user: ObjectUser) {
     sv2UserManager.login(user: user) { (messageError) in
       if let messageError = messageError {
         self.showAlert(title: "Alert", message: messageError, completion: nil)
@@ -137,6 +131,20 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     }
   }
   
+  private func startTimerGetOnlineUsers() {
+    sv2UserManager.fetchOnlineusers { (result) in
+      switch result {
+      case .success(let users):
+        self.googleMapView.clear()
+        //self.clusterManager.clearItems()
+        self._markListUserOnMap(users: users)
+        //self.clusterManager.cluster()
+      case .failure(let error):
+        print(error)
+      }
+    }
+  }
+
   // MARK: - GMUMapViewDelegate
   
   func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
@@ -159,31 +167,13 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   
   // MARK: - Private
   
-  func markRandom() {
+  func _markRandom() {
     for position in self.genRandomPositions(count: kDebugTotalMarker) {
-      markOnMapViewWithPosition(position, .blue)
+      _markOnMapViewWithPosition(position, .blue)
     }
   }
-  
-  func markOwnerLocationOnMapView() {
-    ip2LocationService.loadOwnerIP { result in
-      switch result {
-      case .success(let ownerIP):
-        self.ip2LocationService.getLocationOfIP(ip: ownerIP) { (result) in
-          switch result {
-          case .success(let position):
-            self.ownerMarker.position = position
-          case .failure(let error):
-            self.showAlert(title: "Alert", message: error.localizedDescription, completion: nil)
-          }
-        }
-      case .failure(let error):
-        self.showAlert(title: "Alert", message: error.localizedDescription, completion: nil)
-      }
-    }
-  }
-  
-  func markOnMapViewWithPosition(_ position: LDMapPosition, _ color: UIColor) {
+    
+  func _markOnMapViewWithPosition(_ position: LDMapPosition, _ color: UIColor) {
     let marker = self.createMarkerFromPosition(position, color)
     marker.map = self.googleMapView
   }
@@ -217,7 +207,6 @@ extension MapViewController {
   func updateOwnerMarkerIconWithUrl(url: String) {
     (self.ownerMarker.iconView as! UIImageView).setImage(url: URL(string: url))
   }
-
 }
 
 // MARK: - Helper
@@ -247,5 +236,22 @@ extension MapViewController {
   func randomLongitude() -> CLLocationDegrees {
     return CLLocationDegrees(Int.random(in: -180...180))
   }
-  
+ 
+  func markerImageViewWithUrl(url: String?) -> UIImageView {
+    let imgView = UIImageView()
+    if let url = url {
+      imgView.setImage(url: URL(string: url))
+    } else {
+      imgView.image = UIImage(named: defaultAvatarName)
+    }
+    let avatarWitdh: CGFloat = 30
+    imgView.frame = CGRect(x: 0, y: 0, width: avatarWitdh, height: avatarWitdh)
+    imgView.layer.cornerRadius = avatarWitdh/2
+    imgView.clipsToBounds = true
+    imgView.layer.borderWidth = 1.0
+    imgView.layer.borderColor = UIColor.black.cgColor
+   
+    return imgView
+  }
+
 }
