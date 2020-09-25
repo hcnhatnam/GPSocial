@@ -50,5 +50,31 @@ The database used to show location can be obtained from :
 ## Usage
 ## Wiki
 More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/IpLocationConnect/wiki)
+## Contribution
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+<table>
+    <tr>
+        <td align="center"><a href="https://github.com/hcnhatnam"><img
+                    src="https://avatars3.githubusercontent.com/u/37246426?s=460&u=0533d988bd0178af822ee1ca036cf5584d6e2196&v=4"
+                    width="100px;" alt="" /><br /><sub><b>Hoang Nam</b></sub></a><br /><a href="#question-kentcdodds"
+                title="Answering Questions">💬</a> <a
+                href="https://github.com/all-contributors/all-contributors/commits?author=jfmengels"
+                title="Documentation">📖</a> <a
+                href="https://github.com/all-contributors/all-contributors/pulls?q=is%3Apr+reviewed-by%3Ajfmengels"
+                title="Reviewed Pull Requests">👀</a> <a href="#tool-jfmengels" title="Tools">🔧</a><a
+                href="#talk-kentcdodds" title="Talks">📢</a></td>
+        <td align="center"><a href="https://github.com/duydole"><img
+                    src="https://avatars2.githubusercontent.com/u/44370762?s=460&u=cb4d89887e8821c74567e5de95682eb6339ebe36&v=4"
+                    width="100px;" alt="" /><br /><sub><b>Kent
+                        Duy Đỗ</b></sub></a><br /><a href="#question-kentcdodds" title="Answering Questions">💬</a> <a
+                href="https://github.com/all-contributors/all-contributors/commits?author=kentcdodds"
+                title="Documentation">📖</a> <a
+                href="https://github.com/all-contributors/all-contributors/pulls?q=is%3Apr+reviewed-by%3Akentcdodds"
+                title="Reviewed Pull Requests">👀</a> <a href="#talk-kentcdodds" title="Talks">📢</a></td>
+
+    </tr>
+</table>
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
