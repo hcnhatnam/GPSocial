@@ -62,12 +62,18 @@ public abstract class FirebaseCRUD<T> {
         return Optional.empty();
     }
 
-    public Optional<T> getByField(String fieldName, String fieldValue) throws InterruptedException, ExecutionException {
-        ApiFuture<QuerySnapshot> future
-                = dbFirestore.collection(colName).whereEqualTo(fieldName, fieldValue).limit(1).get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        for (DocumentSnapshot document : documents) {
-            return Optional.of(document.toObject(typeObjClass));
+    public Optional<T> getByField(String fieldName, String fieldValue) {
+        try {
+
+            ApiFuture<QuerySnapshot> future
+                    = dbFirestore.collection(colName).whereEqualTo(fieldName, fieldValue).limit(1).get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (DocumentSnapshot document : documents) {
+                return Optional.of(document.toObject(typeObjClass));
+            }
+
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
         }
         return Optional.empty();
     }

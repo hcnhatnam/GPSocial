@@ -60,6 +60,7 @@ export async function findUserByEmail(email) {
 }
 export async function findUser(_id) {
   const user = await usersRef.doc(_id).get();
+  console.log("a[a[aa[a", user, user.exists, user.data())
   if (user.exists) {
     return user.data()
   }
@@ -79,9 +80,9 @@ export async function createUser(user) {
   const {
     id
   } = await usersRef.add({
-    username: user.name,
-    avatar: user.avatar,
-    email: user.email
+    username: user.username,
+    email: user.email,
+    profilePicLink: user.profilePicLink
   });
   await usersRef.doc(id).update({
     _id: id

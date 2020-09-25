@@ -254,15 +254,24 @@ export default {
         this.createRoom();
         return;
       }
+      let isExistRoomWithInviteUser = false;
       for (const room of this.rooms) {
-        const inviteUser = room.users.find(x => (x._id = this.invitedUserId));
-        console.log("inviteUser", inviteUser);
+        const inviteUser = room.users.find(x => x._id === this.invitedUserId);
+        console.log(
+          "inviteUser",
+          inviteUser,
+          "this.invitedUserId",
+          this.invitedUserId
+        );
         if (inviteUser !== undefined) {
           this.selectedRoom = room._id;
-        } else {
-          this.createRoom();
-          return;
+          isExistRoomWithInviteUser = true;
+          break;
         }
+      }
+      if (!isExistRoomWithInviteUser) {
+        this.createRoom();
+        return;
       }
       this.loadingRooms = false;
       this.rooms.map((room, index) => this.listenLastMessage(room, index));
@@ -641,9 +650,9 @@ export default {
       this.disableForm = true;
 
       const user = await findUser(this.invitedUserId);
-
-      if (user != null) {
-        console.log("addUser", user, this.invitedUserId);
+      console.log("userssssssssss", user);
+      if (user === null) {
+        console.log("addUserssss", user, this.invitedUserId);
         await usersRef.doc(user._id).set(user);
       }
 
@@ -656,9 +665,12 @@ export default {
       const room = {
         users: [this.currentUserId, this.invitedUserId]
       };
-      const { _id } = await roomsRef.add(room);
-      await roomsRef.doc(_id).update({
-        _id: _id
+      console.log("roommmm", room);
+      const { id } = await roomsRef.add(room);
+      console.log("_id", id);
+
+      await roomsRef.doc(id).update({
+        _id: id
       });
       this.addNewRoom = false;
       this.addRoomUsername = "";

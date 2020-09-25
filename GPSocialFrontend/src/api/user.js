@@ -28,16 +28,14 @@ const users = {
 }
 
 export async function login(user) {
-  const info = await getInfoFromExtApi();
-  const params = {
-    ...user,
-    ...info.data
-  }
-  console.log("info", params);
+  // const info = await getInfoFromExtApi();
+  console.log("info", user);
   return request({
     url: '/user/login',
     method: 'post',
-    params
+    params: {
+      ...user
+    }
   })
 }
 
@@ -51,9 +49,12 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout(email) {
   return request({
     url: '/user/logout',
-    method: 'post'
+    method: 'post',
+    params: {
+      email: email
+    }
   })
 }

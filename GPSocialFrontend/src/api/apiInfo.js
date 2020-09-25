@@ -1,10 +1,13 @@
 import request from '@/utils/request'
 import axios from 'axios'
 
-export function getOtherPeoPle() {
+export function getOnlineUsers(email) {
   return request({
-    url: '/people',
-    method: 'get'
+    url: '/user/onlineusers',
+    method: 'get',
+    params: {
+      email: email
+    }
   })
 }
 export function getIp() {

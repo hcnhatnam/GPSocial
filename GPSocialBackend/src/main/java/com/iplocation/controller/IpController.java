@@ -5,7 +5,6 @@ import com.iplocation.entites.LocationInfo;
 import com.iplocation.entites.ResultIp2Location;
 import com.iplocation.entites.ResultObject;
 import com.iplocation.service.IpUtils;
-import com.iplocation.service.LocationUtils;
 import com.iplocation.service.Service;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +34,11 @@ public class IpController {
     }
 
 
-    @GetMapping("/people")
+    @GetMapping("/online")
     public ResultObject getPeople() {
         ResultObject resultObject = new ResultObject(0, "");
         try {
-            resultObject.putData("userofapp", Service.ONLINE_USERS);
+            resultObject.putData("onlineUsers", Service.ONLINE_USERS);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
@@ -52,9 +51,9 @@ public class IpController {
     public ResultObject ipInfo(@RequestParam(value = "ip", defaultValue = "") String ip) {
         ResultObject resultObject = new ResultObject(0, "");
         try {
-            Optional<LocationInfo> op = LocationUtils.getLocationInfoAntherAPI(ip);
+            Optional<LocationInfo> op = LocationInfo.getInstance(ip);
             if (op.isPresent()) {
-                resultObject.putData("ips", op.get());
+                resultObject.putData("info", op.get());
             } else {
                 resultObject.setError(ResultObject.ERROR);
                 resultObject.setMessage("Can't find LocationInfo");

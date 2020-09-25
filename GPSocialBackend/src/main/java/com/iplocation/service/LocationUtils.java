@@ -48,6 +48,10 @@ public class LocationUtils {
         }
         return Optional.empty();
     }
-    
-   
+
+    public static void main(String[] args) {
+        Gson gson = new Gson();
+        System.err.println(gson.toJson(getLocationInfoAntherAPI("14.241.230.44")));
+    }
+
 }

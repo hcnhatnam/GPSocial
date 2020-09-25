@@ -3,51 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iplocation;
+package com.iplocation.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.springframework.stereotype.Service;
+import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javax.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author namhcn
  */
 @Service
-public class FireBase {
+public class FBInitialize {
 
-    public static String projectId = "iplocationchat";
-
-    public static void main(String[] args) throws IOException {
-        FileInputStream serviceAccount
-                = new FileInputStream("iplocationchat-firebase-adminsdk.json");
-
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://iplocationchat.firebaseio.com")
-                .build();
-
-        FirebaseApp.initializeApp(options);
-    }
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(FBInitialize.class);
+    
     @PostConstruct
     public void initialize() {
         try {
-
             FileInputStream serviceAccount
                     = new FileInputStream("iplocationchat-firebase-adminsdk.json");
-
+            
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://iplocationchat.firebaseio.com")
                     .build();
-
+            
             FirebaseApp.initializeApp(options);
-        } catch (Exception e) {
+        } catch (IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
         }
+        
     }
 }

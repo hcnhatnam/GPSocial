@@ -18,13 +18,9 @@ G:::::G        G::::G  P::::P                        S:::::So::::o     o::::oc::
         GGGGGG   GGGGPPPPPPPPPP           SSSSSSSSSSSSSSS      ooooooooooo       cccccccccccccccciiiiiiii  aaaaaaaaaa  aaaallllllll
                                                                                                                                   
 "
-PID=$(lsof -i :8765|grep -a java |awk '{print $2 }')
-echo "PID" $PID
-if [[ -z "$PID" ]]; then
-  echo "GPSocial Backend is not running"
-else
- echo "GPSocial Backend is running. KILL PID running:" $PID "to restart"
- kill -9 $PID
-fi
+for pid in $(ps aux|grep -a "GPS"|grep -a "com.iplocation.RestServiceApplication"|awk '{print $2}'); 
+	do kill -9 $pid; 
+	echo "KILL PROCESS" $pid
+done
 
 ./gradlew bootRun 

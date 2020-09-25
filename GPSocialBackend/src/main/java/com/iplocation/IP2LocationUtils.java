@@ -27,7 +27,7 @@ public class IP2LocationUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(IP2Location.class);
 
     private static final String BIN_FILE = "libs/IP2LOCATION-LITE-DB11.IPV6.BIN/IP2LOCATION-LITE-DB11.IPV6.BIN";
-    private static IP2Location ip2Location;
+    private static final IP2Location ip2Location;
 
     static {
         ip2Location = new IP2Location();

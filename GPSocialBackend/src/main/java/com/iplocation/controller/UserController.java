@@ -5,10 +5,8 @@
  */
 package com.iplocation.controller;
 
-import com.iplocation.IP2LocationUtils;
 import com.iplocation.entites.LocationInfo;
 import com.iplocation.entites.OnlineUser;
-import com.iplocation.entites.ResultIp2Location;
 import com.iplocation.entites.ResultObject;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.entites.User;
@@ -18,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.Cookie;
@@ -26,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,30 +39,38 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/user/ping")
+    @GetMapping("/user/onlineusers")
     public ResultObject ping(HttpServletRequest request, @RequestParam(value = "email", defaultValue = "") String email) {
         ResultObject resultObject = new ResultObject();
-        if (email.isEmpty()) {
-            resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage("Email Not Found");
-        }
-        OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
-        if (onlineUser != null) {
-            Optional<LocationInfo> opLocationInfo = LocationInfo.getInstance(request);
-            onlineUser.setLastPing(System.currentTimeMillis());
-            if (opLocationInfo.isPresent()) {
-                onlineUser.setLocationInfo(opLocationInfo.get());
+        try {
+
+            if (email.isEmpty()) {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("Email Not Found");
             }
-            resultObject.putData("onlineUsers", Service.ONLINE_USERS);
-        } else {
+            OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
+            if (onlineUser != null) {
+                Optional<LocationInfo> opLocationInfo = LocationInfo.getInstance(request);
+                onlineUser.setLastPing(System.currentTimeMillis());
+                if (opLocationInfo.isPresent()) {
+                    onlineUser.setLocationInfo(opLocationInfo.get());
+                }
+                resultObject.putData("onlineUsers", Service.ONLINE_USERS);
+            } else {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage(String.format("User with email %s not Found!", email));
+            }
+
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage(String.format("User with email %s not Found!", email));
+            resultObject.setMessage(ex.getMessage());
         }
         return resultObject;
     }
 
     @PostMapping("/user/register")
-    public ResultObject registerUser(@RequestParam(value = "email", defaultValue = "") String email,
+    public ResultObject registerUser(@RequestParam(value = "email", defaultValue = "https://icons.iconarchive.com/icons/papirus-team/papirus-status/512/avatar-default-icon.png") String email,
             @RequestParam(value = "profilepiclink", defaultValue = "") String profilePicLink,
             @RequestParam(value = "username", defaultValue = "") String username,
             @RequestParam(value = "password", defaultValue = "") String password) {
@@ -87,13 +93,21 @@ public class UserController {
                     User userFireBase = new User(email, profilePicLink, username);
                     Service.USER_FB.save(userFireBase);
                 } else {
-                    resultObject.setError(ResultObject.ERROR);
-                    resultObject.setMessage("email exist");
+                    Optional<User> ops = Service.USER_FB.getByField("email", email);
+                    if (ops.isPresent()) {
+                        Service.AUTHEN_FB.save(userAuthen);
+                    } else {
+                        resultObject.setError(ResultObject.ERROR);
+                        resultObject.setMessage("email exist");
+                    }
+
                 }
             }
 
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
+            resultObject.setError(ResultObject.ERROR);
+            resultObject.setMessage(ex.getMessage());
         }
         return resultObject;
     }
@@ -105,7 +119,7 @@ public class UserController {
             HttpServletResponse response) {
         ResultObject resultObject = new ResultObject(0, "");
         try {
-            if (password.isEmpty()) {
+            if (email.isEmpty()) {
                 resultObject.setError(ResultObject.ERROR);
                 resultObject.setMessage("email Empty");
                 return resultObject;
@@ -132,11 +146,13 @@ public class UserController {
                 OnlineUser onlineUser = new OnlineUser(user, System.currentTimeMillis(), ip);
                 Optional<LocationInfo> op = LocationInfo.getInstance(ip);
                 if (op.isPresent()) {
-                    resultObject.putData("locationinfo", op.get());
                     onlineUser.setLocationInfo(op.get());
+                    resultObject.putData("locationinfo", onlineUser.getLocationInfo());
                 }
+
                 Service.ONLINE_USERS.put(email, onlineUser);
                 resultObject.putData("ip", ip);
+                resultObject.putData("token", token);
                 Cookie cookie = new Cookie("token", token);
                 response.addCookie(cookie);
             } else {
@@ -145,58 +161,75 @@ public class UserController {
                 resultObject.setMessage("You have not signed up for an account with this email");
             }
 
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage(e.getMessage());
+            resultObject.setMessage(ex.getMessage());
         }
         return resultObject;
     }
 
     @PostMapping("/user/logout")
     public ResultObject logout(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "username", defaultValue = "") String username) {
+            @RequestParam(value = "email", defaultValue = "") String email) {
         ResultObject resultObject = new ResultObject(0, "");
         try {
-            for (Cookie ck : request.getCookies()) {
-                ck.setValue("");
-                ck.setMaxAge(0);
-                ck.setPath("/");
-                response.addCookie(ck);
+            if (email.isEmpty()) {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("email in param Empty!");
+            } else {
+                OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
+                if (onlineUser != null) {
+                    Service.ONLINE_USERS.remove(email);
+                } else {
+                    resultObject.setError(ResultObject.ERROR);
+                    resultObject.setMessage(String.format("Online User (%) not found!", email));
+                }
+                for (Cookie ck : request.getCookies()) {
+                    ck.setValue("");
+                    ck.setMaxAge(0);
+                    ck.setPath("/");
+                    response.addCookie(ck);
+                }
             }
 
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage(e.getMessage());
+            resultObject.setMessage(ex.getMessage());
         }
         return resultObject;
     }
 
     @RequestMapping("/user/info")
-    public ResultObject userInfo(@RequestParam(value = "token", defaultValue = "") String token) {
+    public ResultObject userInfo(@CookieValue(value = "token", defaultValue = "") String token) {
         ResultObject resultObject = new ResultObject(0, "");
+
         try {
-            String email = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8);
-            OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
-            if (onlineUser != null && onlineUser.getUser() != null) {
-                if (email.equals(onlineUser.getUser().getEmail())) {
-                    resultObject.putData("user", onlineUser);
-                    return resultObject;
+            if (!token.isEmpty()) {
+                String email = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8);
+                OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
+                if (onlineUser != null && onlineUser.getUser() != null) {
+                    if (email.equals(onlineUser.getUser().getEmail())) {
+                        resultObject.putData("user", onlineUser);
+                        return resultObject;
+                    }
                 }
+
             }
 
             resultObject.setError(ResultObject.ERROR);
             resultObject.setMessage("Not Found Token");
 
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage(e.getMessage());
+            resultObject.setMessage(ex.getMessage());
         }
         return resultObject;
     }
     public static final List<String> IPS = new ArrayList<>();
+    public static final List<String> EMAIL_USERS = new ArrayList<>();
 
     static {
         IPS.add("23.129.64.208");
@@ -209,6 +242,25 @@ public class UserController {
         IPS.add("14.241.130.26");
         IPS.add("15.241.330.13");
         IPS.add("25.221.310.26");
-        IPS.add("90.31.430.26");
+        IPS.add("10.11.430.26");
+        IPS.add("10.112.430.26");
+        IPS.add("10.114.430.26");
+        IPS.add("10.115.430.26");
+        IPS.add("10.116.430.26");
+        IPS.add("10.11.230.26");
+        IPS.add("10.61.230.36");
+        IPS.add("10.01.230.46");
+        IPS.add("10.41.230.56");
+        IPS.add("10.31.230.96");
+
+        EMAIL_USERS.add("nam@gmail.com");
+        EMAIL_USERS.add("duy@gmail.com");
+        EMAIL_USERS.add("etest@gmail.com");
+        EMAIL_USERS.add("nhat@gmail.com");
+
+    }
+
+    public static void main(String[] args) {
+        System.err.println(Base64.getEncoder().encodeToString("nam@gmail.com.vn".getBytes()));
     }
 }

@@ -8,6 +8,7 @@ package com.iplocation.entites;
 import com.ip2location.IPResult;
 import com.iplocation.IP2LocationUtils;
 import com.iplocation.controller.IpController;
+import com.iplocation.controller.UserController;
 import com.iplocation.service.IpUtils;
 import com.iplocation.service.LocationUtils;
 import java.util.Optional;
@@ -46,11 +47,12 @@ public class LocationInfo {
 
     public static Optional<LocationInfo> getInstance(String ip) {
         Optional<ResultIp2Location> opIp2Location = IP2LocationUtils.get(ip);
-        LocationInfo locationInfo = new LocationInfo();
+        LocationInfo locationInfo = null;
 
         if (opIp2Location.isPresent()) {
             ResultIp2Location resultIp2Location = opIp2Location.get();
             if (resultIp2Location.getError() == ResultIp2Location.ERROR_IP2LOCATION.SUCCESS) {
+                locationInfo = new LocationInfo();
                 IPResult iPResult = resultIp2Location.getIPResult();
                 locationInfo.setCity(iPResult.getCity());
                 locationInfo.setIPv4(ip);
@@ -62,7 +64,18 @@ public class LocationInfo {
                 return Optional.of(locationInfo);
             }
         }
+
+        //hard code for Test (The resion using 1 machine for test)
         //Retry another API
-        return LocationUtils.getLocationInfoAntherAPI(ip);
+        if (locationInfo == null) {
+            locationInfo = LocationUtils.getLocationInfoAntherAPI(ip).get();
+        }
+        if (UserController.IPS.contains(ip)) {
+            locationInfo.setLongitude(ip.hashCode() % 85);
+            locationInfo.setLatitude(ip.hashCode() % 50);
+
+        }
+        return Optional.of(locationInfo);
+
     }
 }

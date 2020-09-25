@@ -37,7 +37,7 @@ export default {
   },
   mounted() {
     try {
-      this.socket = new SockJS("http://localhost:8000/ws");
+      this.socket = new SockJS(process.env.VUE_APP_BASE_API + ":8000/ws");
       var options = {
         debug: false
         // protocols: Stomp.VERSIONS.supportedProtocols()

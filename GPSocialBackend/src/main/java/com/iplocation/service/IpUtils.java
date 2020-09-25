@@ -5,8 +5,9 @@
  */
 package com.iplocation.service;
 
-import com.iplocation.CORSFilter;
+import com.iplocation.controller.UserController;
 import static com.iplocation.controller.UserController.IPS;
+import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,17 @@ public class IpUtils {
         "HTTP_VIA",
         "REMOTE_ADDR"
     };
+    public static Random rd = new Random();
 
     public static String getClientIpAIfExist(HttpServletRequest request) {
         String ip = "";
+        try {
+            String email = request.getParameterMap().get("email")[0];
+            if (UserController.EMAIL_USERS.contains(email)) {
+                return IPS.get(Math.abs(email.hashCode() % IPS.size()) - 1);
+            }
+        } catch (Exception ex) {
+        }
         try {
             for (String header : IP_HEADER_CANDIDATES) {
                 String ipList = request.getHeader(header);
@@ -46,7 +55,7 @@ public class IpUtils {
             if (ip.isEmpty()) {
                 ip = request.getRemoteAddr();
                 if (ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")) {
-                    ip = IPS.get((Math.abs((int) (System.currentTimeMillis() % 1000)) % IPS.size()) - 1);
+                    ip = IPS.get(rd.nextInt(IPS.size() - 1));
                 }
             }
         } catch (Exception ex) {

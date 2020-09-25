@@ -30,6 +30,7 @@
         :position="m.position"
         :icon="m.icon"
         :clickable="true"
+        :label="m.name"
         :draggable="true"
         @click="clickMarker(m)"
       />
@@ -77,7 +78,7 @@ class Marker {
   }
 }
 import { getInfoFromExtApi, getInfoWithIp } from "@/api/apiExt";
-import { getOtherPeoPle } from "@/api/apiInfo";
+import { getOnlineUsers } from "@/api/apiInfo";
 import store from "@/store";
 import PubSubMessageClass from "@/utils/pubsubmessage";
 import UserChat from "@/utils/UserChat";
@@ -90,6 +91,7 @@ export default {
   },
   data() {
     return {
+      keyMap: 0,
       ratioMap: 0.7,
       screen: null,
       markers: [],
@@ -111,6 +113,9 @@ export default {
     user() {
       return this.$store.state.user.user;
     },
+    userInfo() {
+      return this.$store.state.user;
+    },
     getCenter() {
       if (this.markers.length === 0) {
         return {
@@ -124,8 +129,6 @@ export default {
   },
   watch: {
     markers: function() {
-      console.log("markers", this.markers);
-
       if (this.markers.length === 0) {
         return {
           lat: 0,
@@ -135,19 +138,19 @@ export default {
       const mark = this.markers[this.markers.length - 1];
       this.centerMap = mark.position;
       for (const marker of this.markers) {
-        const user = this.users.find(x => x._id === marker.name);
-        console.log("user", user, marker);
+        const user = this.users.find(x => x._id === marker.user._id);
         if (user === undefined) {
           this.users.push(
             new UserChat(
               marker.user._id,
-              marker.user.name,
-              marker.user.avatar, // "https://img.icons8.com/officel/16/000000/circled-user-male-skin-type-6.png",
+              marker.user.username,
+              marker.user.profilePicLink, // "https://img.icons8.com/officel/16/000000/circled-user-male-skin-type-6.png",
               marker.user.email
             )
           );
         }
       }
+      this.keyMap++;
     }
   },
   mounted() {
@@ -160,20 +163,22 @@ export default {
         this.user._id = userGet._id;
       }
       this.screen = screen;
-      console.log("use========", this.user);
-
-      this.markLocaionWithIp(this.user.ip, this.user.name, this.user);
+      console.log("use========", this.user, this.userInfo);
+      getInfoWithIp(this.userInfo.ip).then(resp => {
+        console.log("resp.data", resp.data);
+        this.markLocaionWithIp(resp.data.info, this.user.email, this.user);
+      });
       this.timmerGetInfo();
       this.users.push(
         new UserChat(
           this.user._id,
-          this.user.name,
-          this.user.avatar,
+          this.user.username,
+          this.user.profilePicLink,
           this.user.email
         )
       );
       this.pubsubmessage = new PubSubMessageClass(
-        this.user.name,
+        this.user.email,
         this.onMessageReceived,
         true
       );
@@ -182,8 +187,8 @@ export default {
           if (user.username !== this.user.name) {
             this.pubsubmessage.sendMessage(
               "Message comming",
-              this.user.name,
-              user.username
+              this.user.email,
+              user.email
             );
           }
         }
@@ -205,28 +210,27 @@ export default {
     },
     timmerGetInfo() {
       setInterval(() => {
-        getOtherPeoPle().then(resp => {
+        getOnlineUsers(this.user.email).then(resp => {
           if (resp.error === 0) {
-            const userofapp = resp.data.userofapp;
-            for (const name of Object.keys(userofapp)) {
-              if (name !== this.user.name) {
-                if (this.mapUser[name] === undefined) {
-                  const user = userofapp[name];
-                  findUserByEmail(user.email).then(userGet => {
-                    if (userGet == null) {
-                      const _id = createUser(user);
-                    }
-                    user._id = userGet._id;
-                    this.mapUser[name] = userofapp[name];
-                    console.log("thuaaaaaaaaaaa", user);
-                    this.markLocaionWithIp(
-                      userofapp[name].ip,
-                      userofapp[name].name,
-                      user
-                    );
-                  });
+            const onlineUsers = resp.data.onlineUsers;
+            this.mapUser = {};
+            this.maker = {};
+
+            for (const email of Object.keys(onlineUsers)) {
+              // console.log("email", email);
+              const user = onlineUsers[email].user;
+              findUserByEmail(user.email).then(userGet => {
+                if (userGet == null) {
+                  const _id = createUser(user);
                 }
-              }
+                user._id = userGet._id;
+                this.mapUser[email] = onlineUsers[email];
+                this.markLocaionWithIp(
+                  this.mapUser[email].locationInfo,
+                  onlineUsers[email].user.email,
+                  user
+                );
+              });
             }
           }
         });
@@ -242,9 +246,7 @@ export default {
       //   marker.name
       // );
     },
-    drawMarker(lat, long) {
-      this.markers.push;
-    },
+    drawMarker(lat, long) {},
     getWidthScreen() {
       return this.screen.width;
     },
@@ -262,25 +264,29 @@ export default {
         position: { lat: event.latLng.lat(), lng: event.latLng.lng() }
       });
     },
-    markLocaionWithIp(ip, name, user) {
-      getInfoWithIp(ip).then(resp => {
-        const result = resp.data;
-        console.log("++++++++++++", result, user, name);
-        const marker = new Marker(
-          result,
-          result.city,
-          result.latitude,
-          result.longitude,
-          name,
-          user
-        );
-        if (name === this.user.name) {
-          marker.icon = {
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-          };
-        }
-        this.markers.push(marker);
+    markLocaionWithIp(locationInfo, email, user) {
+      const result = locationInfo;
+      const marker = new Marker(
+        result,
+        result.city,
+        result.latitude,
+        result.longitude,
+        email,
+        user
+      );
+      if (email === this.user.email) {
+        marker.icon = {
+          url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        };
+      }
+      const index = this.markers.findIndex(x => {
+        return x.user._id === marker.user._id;
       });
+      if (index === -1) {
+        this.markers.push(marker);
+      } else {
+        this.markers[index] = marker;
+      }
     },
     handleClose(done) {
       done();

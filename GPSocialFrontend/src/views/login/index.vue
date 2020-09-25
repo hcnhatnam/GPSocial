@@ -12,15 +12,15 @@
         <h3 class="title">Login Form</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="email"
+          v-model="loginForm.email"
+          placeholder="Email"
+          name="email"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -54,7 +54,7 @@
         @click.native.prevent="handleLogin"
       >Login</el-button>
 
-      <div class="tips" v-on:click="register()">
+      <div class="tips" @click="register()">
         <div>
           <el-link icon="el-icon-edit" type="primary">Register user?</el-link>
         </div>
@@ -79,19 +79,19 @@ export default {
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+      if (value.length < 1) {
+        callback(new Error("The password can not be less than 1 digits"));
       } else {
         callback();
       }
     };
     return {
       loginForm: {
-        username: "admin",
+        email: "admin",
         password: "111111"
       },
       loginRules: {
-        username: [
+        email: [
           { required: true, trigger: "blur", validator: validateUsername }
         ],
         password: [

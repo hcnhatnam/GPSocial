@@ -78,14 +78,14 @@ export default {
   mounted() {
     this.addUsers(this.users);
     this.currentUserIdClone = this.currentUserId;
-    console.log("users", this.users);
+    console.log("users", this.users, "invitedUserId");
   },
 
   methods: {
     async addUsers(users) {
       for (const user of users) {
         const isExistUser = await existUser(user._id);
-
+        console.log("isExistUser", isExistUser, !isExistUser);
         if (!isExistUser) {
           console.log("Adduser", user);
           const { id } = await usersRef.add({
