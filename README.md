@@ -1,7 +1,7 @@
 
 <p align="center">
   <a href="https://github.com/hcnhatnam/GPSocial">
-    <img src="https://f5-group-zf.zdn.vn/2711ef554d17a249fb06/2543873291198976094" alt="ProxyDetector Firewall logo" width="400">
+    <img src="https://f5-group-zf.zdn.vn/2711ef554d17a249fb06/2543873291198976094" alt="GPSociallogo" width="400">
   </a>
 </p>
 
