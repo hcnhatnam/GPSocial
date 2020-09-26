@@ -19,7 +19,6 @@ public class IpController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(IpController.class);
 
-
     @GetMapping("/showip")
     public static ResultObject showip(HttpServletRequest request) {
         ResultObject resultObject = new ResultObject(0, "");
@@ -29,10 +28,17 @@ public class IpController {
             resultObject.setMessage("Can't not Found IP");
         } else {
             resultObject.putData("ip", ip);
+            Optional<LocationInfo> op = LocationInfo.getInstance(ip);
+            if (op.isPresent()) {
+                resultObject.putData("info", op.get());
+            } else {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("Can't find LocationInfo");
+            }
+
         }
         return resultObject;
     }
-
 
     @GetMapping("/online")
     public ResultObject getPeople() {

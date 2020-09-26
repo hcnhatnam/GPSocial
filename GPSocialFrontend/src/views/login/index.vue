@@ -24,6 +24,7 @@
           type="text"
           tabindex="1"
           auto-complete="on"
+          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
 
@@ -54,7 +55,7 @@
         @click.native.prevent="handleLogin"
       >Login</el-button>
 
-      <div class="tips" @click="register()">
+      <div class="tips" @click="dialogVisible=true">
         <div>
           <el-link icon="el-icon-edit" type="primary">Register user?</el-link>
         </div>
@@ -62,6 +63,23 @@
         <span>password: any</span>-->
       </div>
     </el-form>
+    <p class="copyright">
+      © GPSocial TEAM
+      <br />
+      <i class="el-icon-star-on" />
+      <a
+        target="_blank"
+        href="https://github.com/hcnhatnam/GPSocial"
+      >https://github.com/hcnhatnam/GPSocial</a>
+    </p>
+    <el-dialog
+      title="Register"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <Register @close="handleClose" />
+    </el-dialog>
   </div>
 </template>
 
@@ -70,6 +88,9 @@ import { validUsername } from "@/utils/validate";
 
 export default {
   name: "Login",
+  components: {
+    Register: () => import("@/components/Register")
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -86,6 +107,7 @@ export default {
       }
     };
     return {
+      dialogVisible: false,
       loginForm: {
         email: "admin",
         password: "111111"
@@ -112,6 +134,9 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.dialogVisible = false;
+    },
     register() {
       console.log("regster");
       // const appName = rowTable.appname;
@@ -175,10 +200,29 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  footer {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    background-color: #333333;
+  }
+
+  p.copyright {
+    position: absolute;
+    width: 100%;
+    color: #000;
+    line-height: 3em;
+    font-size: 0.7em;
+    text-align: center;
+    bottom: 0;
+    font-size: 1.5em;
+    font-weight: 900;
+  }
   .el-input {
     display: inline-block;
     height: 47px;
     width: 85%;
+    min-height: 1.5em;
 
     input {
       background: transparent;
@@ -186,7 +230,7 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: #000;
       height: 47px;
       caret-color: $cursor;
 
@@ -207,27 +251,27 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
+$bg: url("https://f5-group-zf.zdn.vn/2711ef554d17a249fb06/2543873291198976094");
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$light_gray: black;
 
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-image: $bg;
+  background-repeat: no-repeat;
   overflow: hidden;
-
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 16em 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
 
   .tips {
-    font-size: 14px;
+    font-size: 40px;
     color: #fff;
     margin-bottom: 10px;
 

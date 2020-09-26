@@ -217,7 +217,7 @@ export default {
             this.maker = {};
 
             for (const email of Object.keys(onlineUsers)) {
-              // console.log("email", email);
+              console.log("email", email);
               const user = onlineUsers[email].user;
               findUserByEmail(user.email).then(userGet => {
                 if (userGet == null) {

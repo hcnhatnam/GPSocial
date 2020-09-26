@@ -10,10 +10,11 @@ export function getOnlineUsers(email) {
     }
   })
 }
-export function getIp() {
-  return axios.get(
-    "http://bot.whatismyipaddress.com"
-  )
+export function getInfoLocation() {
+  return request({
+    url: '/showip',
+    method: 'get'
+  })
 }
 export function getInfoWithIp2location(ip) {
   const params = ip

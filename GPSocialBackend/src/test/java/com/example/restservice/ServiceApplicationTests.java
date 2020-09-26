@@ -10,7 +10,9 @@ import com.iplocation.RestServiceApplication;
 import com.iplocation.entites.User;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.service.Service;
+import static com.iplocation.service.Service.scheduledExecutorService;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,7 +39,16 @@ public class ServiceApplicationTests {
 //            System.err.println(gson.toJson(opUserAuthen.get()));
 //        }
 //        System.err.println(Service.AUTHEN_FB.get("nhatnam@gmail.com"));
-        Service.initExampleUser("atest@gmail.com", "10.30.58.78");
-        System.err.println(Service.ONLINE_USERS.get("atest@gmail.com"));
+//        Service.initExampleUser("atest@gmail.com", "10.30.58.78");
+//        System.err.println(Service.ONLINE_USERS.get("atest@gmail.com"));
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                System.err.println("-=========");
+            }
+        }, 1, TimeUnit.SECONDS);
+        while (true) {
+
+        }
     }
 }

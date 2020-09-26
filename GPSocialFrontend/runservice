@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "
+        GGGGGGGGGGGGGPPPPPPPPPPPPPPPPP      SSSSSSSSSSSSSSS                                        iiii                    lllllll 
+     GGG::::::::::::GP::::::::::::::::P   SS:::::::::::::::S                                      i::::i                   l:::::l 
+   GG:::::::::::::::GP::::::PPPPPP:::::P S:::::SSSSSS::::::S                                       iiii                    l:::::l 
+  G:::::GGGGGGGG::::GPP:::::P     P:::::PS:::::S     SSSSSSS                                                               l:::::l 
+ G:::::G       GGGGGG  P::::P     P:::::PS:::::S               ooooooooooo       cccccccccccccccciiiiiii   aaaaaaaaaaaaa    l::::l 
+G:::::G                P::::P     P:::::PS:::::S             oo:::::::::::oo   cc:::::::::::::::ci:::::i   a::::::::::::a   l::::l 
+G:::::G                P::::PPPPPP:::::P  S::::SSSS         o:::::::::::::::o c:::::::::::::::::c i::::i   aaaaaaaaa:::::a  l::::l 
+G:::::G    GGGGGGGGGG  P:::::::::::::PP    SS::::::SSSSS    o:::::ooooo:::::oc:::::::cccccc:::::c i::::i            a::::a  l::::l 
+G:::::G    G::::::::G  P::::PPPPPPPPP        SSS::::::::SS  o::::o     o::::oc::::::c     ccccccc i::::i     aaaaaaa:::::a  l::::l 
+G:::::G    GGGGG::::G  P::::P                   SSSSSS::::S o::::o     o::::oc:::::c              i::::i   aa::::::::::::a  l::::l 
+G:::::G        G::::G  P::::P                        S:::::So::::o     o::::oc:::::c              i::::i  a::::aaaa::::::a  l::::l 
+ G:::::G       G::::G  P::::P                        S:::::So::::o     o::::oc::::::c     ccccccc i::::i a::::a    a:::::a  l::::l 
+  G:::::GGGGGGGG::::GPP::::::PP          SSSSSSS     S:::::So:::::ooooo:::::oc:::::::cccccc:::::ci::::::ia::::a    a:::::a l::::::l
+   GG:::::::::::::::GP::::::::P          S::::::SSSSSS:::::So:::::::::::::::o c:::::::::::::::::ci::::::ia:::::aaaa::::::a l::::::l
+     GGG::::::GGG:::GP::::::::P          S:::::::::::::::SS  oo:::::::::::oo   cc:::::::::::::::ci::::::i a::::::::::aa:::al::::::l
+        GGGGGG   GGGGPPPPPPPPPP           SSSSSSSSSSSSSSS      ooooooooooo       cccccccccccccccciiiiiiii  aaaaaaaaaa  aaaallllllll
+                                                                                                                                  
+"
+for pid in $(ps aux|grep -a serve|grep -a 7000|awk '{print $2}'); 
+	do kill -9 $pid; 
+	echo "KILL PROCESS" $pid
+done
+
+serve dist -l 7000
