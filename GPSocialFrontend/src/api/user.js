@@ -51,6 +51,19 @@ export function getUserById(id) {
     }
   })
 }
+
+export function saveUser(username, email, profilepiclink) {
+  return request({
+    url: '/user/id',
+    method: 'put',
+    params: {
+      username: username,
+      email: email,
+      profilepiclink: profilepiclink
+    }
+  })
+}
+
 export function getUserByEmail(email) {
   return request({
     url: '/user/email',

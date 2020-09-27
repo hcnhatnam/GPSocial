@@ -63,19 +63,19 @@ export const constantRoutes = [{
       }
     }]
   },
-  {
-    path: '/aboutproject',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'About Project',
-      component: () => import('@/views/aboutproject/index'),
-      meta: {
-        title: 'About Project',
-        icon: 'form'
-      }
-    }]
-  },
+  // {
+  //   path: '/aboutproject',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'index',
+  //     name: 'About Project',
+  //     component: () => import('@/views/aboutproject/index'),
+  //     meta: {
+  //       title: 'About Project',
+  //       icon: 'form'
+  //     }
+  //   }]
+  // },
   // {
   //   path: '/example',
   //   component: Layout,

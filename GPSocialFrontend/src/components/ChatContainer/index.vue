@@ -70,7 +70,8 @@ import {
   deleteDbField,
   existUser,
   existRoom,
-  findUser
+  findUser,
+  findUserByEmail
 } from "@/firestore";
 import { EventBus } from "@/main";
 import {
@@ -164,122 +165,118 @@ export default {
     },
 
     async fetchRooms() {
-      this.resetRooms();
+      try {
+        this.resetRooms();
 
-      const query = roomsRef.where(
-        "users",
-        "array-contains",
-        this.currentUserId
-      );
+        const query = roomsRef.where(
+          "users",
+          "array-contains",
+          this.currentUserId
+        );
 
-      const rooms = await query.get();
-      const roomList = [];
-      const rawRoomUsers = [];
-      const rawMessages = [];
-      // console.log("rooms", rooms);
-      rooms.forEach(room => {
-        roomList[room.id] = { ...room.data(), users: [] };
-        console.log(room.data(), roomList);
-        const rawUsers = [];
-        room.data().users.map(userId => {
-          console.log("userid====-", userId);
-          const promise = usersRef
-            .doc(userId)
-            .get()
-            .then(user => {
-              console.log("user.data()", user.data());
+        const rooms = await query.get();
+        const roomList = [];
+        const rawRoomUsers = [];
+        const rawMessages = [];
+        rooms.forEach(room => {
+          roomList[room.id] = { ...room.data(), users: [] };
+          const rawUsers = [];
+          room.data().users.map(userId => {
+            const promise = findUser(userId).then(user => {
               return {
-                ...user.data(),
+                ...user,
                 ...{
                   roomId: room.id,
-                  username: user.data().username
+                  username: user.username
                 }
               };
             });
 
-          rawUsers.push(promise);
+            rawUsers.push(promise);
+          });
+
+          rawUsers.map(users => rawRoomUsers.push(users));
+
+          rawMessages.push(this.getLastMessage(room));
+        });
+        const users = await Promise.all(rawRoomUsers);
+        users.map(user => roomList[user.roomId].users.push(user));
+        console.log("roomList", roomList);
+        const roomMessages = await Promise.all(rawMessages).then(messages => {
+          return messages.map(message => {
+            return {
+              lastMessage: this.formatLastMessage(message),
+              roomId: message.roomId
+            };
+          });
         });
 
-        rawUsers.map(users => rawRoomUsers.push(users));
-        rawMessages.push(this.getLastMessage(room));
-      });
-
-      const users = await Promise.all(rawRoomUsers);
-
-      users.map(user => roomList[user.roomId].users.push(user));
-      console.log("roomList", roomList);
-      const roomMessages = await Promise.all(rawMessages).then(messages => {
-        return messages.map(message => {
-          return {
-            lastMessage: this.formatLastMessage(message),
-            roomId: message.roomId
-          };
-        });
-      });
-
-      roomMessages.map(
-        ms => (roomList[ms.roomId].lastMessage = ms.lastMessage)
-      );
-
-      const formattedRooms = [];
-
-      Object.keys(roomList).forEach(key => {
-        const room = roomList[key];
-
-        const roomContacts = room.users.filter(
-          user => user._id !== this.currentUserId
+        roomMessages.map(
+          ms => (roomList[ms.roomId].lastMessage = ms.lastMessage)
         );
 
-        room.roomName =
-          roomContacts.map(user => user.username).join(", ") || "Myself";
+        const formattedRooms = [];
 
-        const roomAvatar =
-          roomContacts.length === 1 && roomContacts[0].avatar
-            ? roomContacts[0].avatar
-            : require("@/assets/logo.png");
+        Object.keys(roomList).forEach(key => {
+          const room = roomList[key];
 
-        formattedRooms.push({
-          ...{
-            roomId: key,
-            avatar: roomAvatar,
-            ...room
-          }
+          const roomContacts = room.users.filter(
+            user => user._id !== this.currentUserId
+          );
+
+          room.roomName =
+            roomContacts.map(user => user.username).join(", ") || "Myself";
+
+          const roomAvatar =
+            roomContacts.length === 1 && roomContacts[0].avatar
+              ? roomContacts[0].avatar
+              : require("@/assets/logo.png");
+
+          formattedRooms.push({
+            ...{
+              roomId: key,
+              avatar: roomAvatar,
+              ...room
+            }
+          });
         });
-      });
 
-      console.log("  this.rooms ", this.rooms, formattedRooms);
+        console.log("  this.rooms ", this.rooms, formattedRooms);
 
-      this.rooms = formattedRooms; // this.rooms.concat(formattedRooms);
-      if (this.rooms.length === 0) {
-        this.createRoom();
-        return;
-      }
-      let isExistRoomWithInviteUser = false;
-      for (const room of this.rooms) {
-        const inviteUser = room.users.find(x => x._id === this.invitedUserId);
-        console.log(
-          "inviteUser",
-          inviteUser,
-          "this.invitedUserId",
-          this.invitedUserId
-        );
-        if (inviteUser !== undefined) {
-          this.selectedRoom = room._id;
-          console.log("find room", this.selectedRoom);
-          isExistRoomWithInviteUser = true;
-          this.arraymove(this.rooms, this.rooms.indexOf(room), 0);
-          break;
+        this.rooms = formattedRooms; // this.rooms.concat(formattedRooms);
+        if (this.rooms.length === 0) {
+          this.createRoom();
+          return;
         }
-      }
-      if (!isExistRoomWithInviteUser) {
-        this.createRoom();
-        return;
-      }
-      this.loadingRooms = false;
-      this.rooms.map((room, index) => this.listenLastMessage(room, index));
+        let isExistRoomWithInviteUser = false;
+        for (const room of this.rooms) {
+          const inviteUser = room.users.find(x => x._id === this.invitedUserId);
+          console.log(
+            "inviteUser",
+            inviteUser,
+            "this.invitedUserId",
+            this.invitedUserId
+          );
+          if (inviteUser !== undefined) {
+            this.selectedRoom = room._id;
+            console.log("find room", this.selectedRoom);
+            isExistRoomWithInviteUser = true;
+            this.arraymove(this.rooms, this.rooms.indexOf(room), 0);
+            break;
+          }
+        }
+        if (!isExistRoomWithInviteUser) {
+          this.createRoom();
+          return;
+        }
+        this.loadingRooms = false;
+        this.rooms.map((room, index) => this.listenLastMessage(room, index));
 
-      this.listenUsersOnlineStatus();
-      this.listenRoomsTypingUsers(query);
+        this.listenUsersOnlineStatus();
+        this.listenRoomsTypingUsers(query);
+      } catch (error) {
+        console.log(error);
+      }
     },
     arraymove(arr, fromIndex, toIndex) {
       var element = arr[fromIndex];

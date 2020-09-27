@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       keyMap: 0,
-      ratioMap: 0.8,
+      ratioMap: 0.75,
       markers: [],
       zoom: 2,
       centerMap: { lat: 0, lng: 0 },
@@ -235,7 +235,7 @@ export default {
             }
           }
         });
-      }, 2000);
+      }, 4000);
     },
     clickMarker(marker) {
       this.chooseUser = marker.user._id;
