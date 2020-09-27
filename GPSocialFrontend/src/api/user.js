@@ -42,3 +42,21 @@ export function logout(email) {
     }
   })
 }
+export function getUserById(id) {
+  return request({
+    url: '/user/id',
+    method: 'get',
+    params: {
+      id: id
+    }
+  })
+}
+export function getUserByEmail(email) {
+  return request({
+    url: '/user/email',
+    method: 'get',
+    params: {
+      email: email
+    }
+  })
+}

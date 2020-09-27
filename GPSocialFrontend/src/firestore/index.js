@@ -2,7 +2,10 @@ import * as app from "firebase/app";
 import "firebase/firestore";
 import "firebase/database";
 import "firebase/storage";
-
+import {
+  getUserById,
+  getUserByEmail
+} from "@/api/user"
 // const config =
 //   process.env.NODE_ENV === 'development' ?
 //   JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG) :
@@ -45,25 +48,46 @@ export const dbTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 export const deleteDbField = firebase.firestore.FieldValue.delete();
 
 export async function findUserByEmail(email) {
-  const user = await usersRef
-    .where('email', '==', email.toLowerCase())
-    .get()
-    .then(querySnapshot => {
-      if (!querySnapshot.empty) {
-        const user = querySnapshot.docs[0].data()
-        return user;
-      } else {
-        return null;
-      }
-    })
-  return user
-}
-export async function findUser(_id) {
-  const user = await usersRef.doc(_id).get();
-  console.log("a[a[aa[a", user, user.exists, user.data())
-  if (user.exists) {
-    return user.data()
+  const resp = await getUserByEmail(email.toLowerCase())
+  if (resp.error === 0) {
+    return resp.data.user
   }
+  return null
+  // const user = await usersRef
+  //   .where('email', '==', email.toLowerCase())
+  //   .get()
+  //   .then(querySnapshot => {
+  //     if (!querySnapshot.empty) {
+  //       const user = querySnapshot.docs[0].data()
+  //       return user;
+  //     } else {
+  //       return null;
+  //     }
+  //   })
+  // return user
+}
+
+export async function findUser(_id) {
+  // const user = await usersRef.doc(_id).get();
+  // console.log("a[a[aa[a", user, user.exists, user.data())
+  // if (user.exists) {
+  //   return user.data()
+  // }
+  // return null;
+  const resp = await getUserById(_id)
+  // .then(resp => {
+  // console.log(resp)
+
+  // if (resp.error === 0) {
+  //   return resp.data.user
+  // }
+  // return null
+  // })
+  console.log("user", resp.data.user)
+  if (resp.error === 0) {
+    return resp.data.user
+  }
+
   return null;
 }
 export async function existUser(_id) {

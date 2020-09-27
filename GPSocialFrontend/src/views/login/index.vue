@@ -85,7 +85,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import { findUser } from "@/firestore/index";
 export default {
   name: "Login",
   components: {
@@ -133,6 +133,7 @@ export default {
       immediate: true
     }
   },
+  mounted() {},
   methods: {
     handleClose() {
       this.dialogVisible = false;
@@ -162,6 +163,7 @@ export default {
       });
     },
     handleLogin() {
+      console.log("handleLogin");
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;

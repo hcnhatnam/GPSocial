@@ -7,7 +7,6 @@ package com.iplocation.entites;
 
 import com.ip2location.IPResult;
 import com.iplocation.IP2LocationUtils;
-import com.iplocation.controller.IpController;
 import com.iplocation.controller.UserController;
 import com.iplocation.service.IpUtils;
 import com.iplocation.service.LocationUtils;
@@ -61,7 +60,6 @@ public class LocationInfo {
                 locationInfo.setState("");
                 locationInfo.setCountry_code(iPResult.getZipCode());
                 locationInfo.setCountry_name(iPResult.getCountryShort());
-                return Optional.of(locationInfo);
             }
         }
 

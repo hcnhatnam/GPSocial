@@ -12,6 +12,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
+import com.iplocation.entites.IData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author namhcn
  * @param <T>
  */
-public abstract class FirebaseCRUD<T> {
+public class FirebaseCRUD<T extends IData> implements IDataOperate<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseCRUD.class);
     private final Class<T> typeObjClass;
@@ -37,16 +38,18 @@ public abstract class FirebaseCRUD<T> {
 
     public static final Firestore dbFirestore = FirestoreClient.getFirestore();
 
-    public abstract String getId(T obj);
-
-    public void save(T userFireBase) {
+    @Override
+    public Optional<T> save(T userFireBase) {
         try {
-            dbFirestore.collection(colName).document(getId(userFireBase)).set(userFireBase);
+            dbFirestore.collection(colName).document(userFireBase.getId()).set(userFireBase);
+            return Optional.of(userFireBase);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
+        return Optional.empty();
     }
 
+    @Override
     public Optional<T> get(String _id) {
         try {
             DocumentReference documentReference = dbFirestore.collection(colName).document(_id);
@@ -62,6 +65,7 @@ public abstract class FirebaseCRUD<T> {
         return Optional.empty();
     }
 
+    @Override
     public Optional<T> getByField(String fieldName, String fieldValue) {
         try {
 
@@ -72,39 +76,48 @@ public abstract class FirebaseCRUD<T> {
                 return Optional.of(document.toObject(typeObjClass));
             }
 
+        } catch (InterruptedException | ExecutionException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<T> update(T obj) {
+        try {
+            dbFirestore.collection(colName).document(obj.getId()).set(obj);
+            return Optional.of(obj);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
         return Optional.empty();
     }
 
-    public void update(T obj) throws InterruptedException, ExecutionException {
+    @Override
+    public Optional<T> deleteUser(String id) {
         try {
-            dbFirestore.collection(colName).document(getId(obj)).set(obj);
+            Optional<T> opObj = get(id);
+            if (opObj.isPresent()) {
+                dbFirestore.collection(colName).document(id).delete();
+                return opObj;
+            }
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
+        return Optional.empty();
     }
 
-    public void deleteUser(String id) {
-        try {
-            dbFirestore.collection(colName).document(id).delete();
-        } catch (Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-    }
-
-    public List<T> getAll() {
-        List<T> listObj = new ArrayList<>();
-        try {
-            ApiFuture<QuerySnapshot> future = dbFirestore.collection(colName).get();
-            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-            documents.forEach(document -> {
-                listObj.add(document.toObject(typeObjClass));
-            });
-        } catch (InterruptedException | ExecutionException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return listObj;
-    }
+//    public List<T> getAll() {
+//        List<T> listObj = new ArrayList<>();
+//        try {
+//            ApiFuture<QuerySnapshot> future = dbFirestore.collection(colName).get();
+//            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//            documents.forEach(document -> {
+//                listObj.add(document.toObject(typeObjClass));
+//            });
+//        } catch (InterruptedException | ExecutionException ex) {
+//            LOGGER.error(ex.getMessage(), ex);
+//        }
+//        return listObj;
+//    }
 }

@@ -39,6 +39,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.3.3.RELEASE'
 
     compile 'com.google.firebase:firebase-admin:7.0.0'
+    
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+
 }
 
 test {

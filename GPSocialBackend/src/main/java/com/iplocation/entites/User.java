@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User implements IData{
 
     private static final Gson gson = new Gson();
 
@@ -38,6 +38,11 @@ public class User {
     @Override
     public String toString() {
         return gson.toJson(this);
+    }
+
+    @Override
+    public String getId() {
+        return this._id;
     }
 
 }

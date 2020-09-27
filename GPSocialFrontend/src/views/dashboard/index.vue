@@ -1,5 +1,5 @@
 <template>
-  <div v-if="screen !== null" class="full-height">
+  <div class="full-height">
     <!-- <el-button style="margin:3em" @click="clickTest()">Test</el-button>
 
     <el-badge :value="12" class="item">
@@ -30,12 +30,11 @@
         :position="m.position"
         :icon="m.icon"
         :clickable="true"
-        :label="m.name"
         :draggable="true"
         @click="clickMarker(m)"
       />
     </GmapMap>
-    <el-button v-for="(m, index) in markers" :key="index" @click="clickMarker(m)">{{ m.name }}</el-button>
+    <!-- <el-button v-for="(m, index) in markers" :key="index" @click="clickMarker(m)">{{ m.name }}</el-button> -->
 
     <el-dialog
       title="Chat"
@@ -92,8 +91,7 @@ export default {
   data() {
     return {
       keyMap: 0,
-      ratioMap: 0.7,
-      screen: null,
+      ratioMap: 0.8,
       markers: [],
       zoom: 2,
       centerMap: { lat: 0, lng: 0 },
@@ -106,7 +104,9 @@ export default {
       dialogVisible: false,
       pubsubmessage: null,
       fullscreen: false,
-      theme: "light"
+      theme: "light",
+      screenWidth: screen.width,
+      screenHeight: screen.height
     };
   },
   computed: {
@@ -153,6 +153,9 @@ export default {
       this.keyMap++;
     }
   },
+  created() {
+    window.addEventListener("resize", this.evenResizeHandler);
+  },
   mounted() {
     console.log("this.user", this.user);
     findUserByEmail(this.user.email).then(userGet => {
@@ -162,7 +165,6 @@ export default {
       } else {
         this.user._id = userGet._id;
       }
-      this.screen = screen;
       console.log("use========", this.user, this.userInfo);
       getInfoWithIp(this.userInfo.ip).then(resp => {
         console.log("resp.data", resp.data);
@@ -178,7 +180,7 @@ export default {
         )
       );
       this.pubsubmessage = new PubSubMessageClass(
-        this.user.email,
+        this.user._id,
         this.onMessageReceived,
         true
       );
@@ -187,8 +189,8 @@ export default {
           if (user.username !== this.user.name) {
             this.pubsubmessage.sendMessage(
               "Message comming",
-              this.user.email,
-              user.email
+              this.user._id,
+              user._id
             );
           }
         }
@@ -217,7 +219,6 @@ export default {
             this.maker = {};
 
             for (const email of Object.keys(onlineUsers)) {
-              console.log("email", email);
               const user = onlineUsers[email].user;
               findUserByEmail(user.email).then(userGet => {
                 if (userGet == null) {
@@ -247,16 +248,13 @@ export default {
       // );
     },
     drawMarker(lat, long) {},
-    getWidthScreen() {
-      return this.screen.width;
-    },
-    getHeightScreen() {
-      return this.screen.height;
+    evenResizeHandler(e) {
+      this.screenWidth = document.documentElement.clientWidth;
+      this.screenHeight = document.documentElement.clientHeight;
     },
     getStyleMap() {
       return `margin: auto;width: ${this.ratioMap *
-        this.getWidthScreen()}px; height: ${this.ratioMap *
-        this.getHeightScreen()}px`;
+        this.screenWidth}px; height: ${this.ratioMap * this.screenHeight}px`;
     },
     mark(event) {
       this.markers.push({
@@ -277,6 +275,12 @@ export default {
       if (email === this.user.email) {
         marker.icon = {
           url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        };
+      } else {
+        marker.icon = {
+          url: user.profilePicLink,
+          size: { width: 40, height: 40, f: "px", b: "px" },
+          scaledSize: { width: 30, height: 30, f: "px", b: "px" }
         };
       }
       const index = this.markers.findIndex(x => {

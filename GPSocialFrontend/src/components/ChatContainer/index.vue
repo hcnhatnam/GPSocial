@@ -265,7 +265,9 @@ export default {
         );
         if (inviteUser !== undefined) {
           this.selectedRoom = room._id;
+          console.log("find room", this.selectedRoom);
           isExistRoomWithInviteUser = true;
+          this.arraymove(this.rooms, this.rooms.indexOf(room), 0);
           break;
         }
       }
@@ -279,7 +281,11 @@ export default {
       this.listenUsersOnlineStatus();
       this.listenRoomsTypingUsers(query);
     },
-
+    arraymove(arr, fromIndex, toIndex) {
+      var element = arr[fromIndex];
+      arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, element);
+    },
     getLastMessage(room) {
       return this.messagesRef(room.id)
         .orderBy("timestamp", "desc")
@@ -627,7 +633,6 @@ export default {
 
               const last_changed =
                 timestampFormat === "HH:mm" ? `today, ${timestamp}` : timestamp;
-              console.log("userStatus", user);
               user.status = { ...snapshot.val(), last_changed };
               console.log("==========");
 

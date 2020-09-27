@@ -5,16 +5,13 @@
  */
 package com.example.restservice;
 
-import com.google.gson.Gson;
+import com.ipcloation.constance.Const;
 import com.iplocation.RestServiceApplication;
-import com.iplocation.entites.User;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.service.Service;
-import static com.iplocation.service.Service.scheduledExecutorService;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,29 +23,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 @AutoConfigureMockMvc
 public class ServiceApplicationTests {
 
-//    @Autowired
-//    UserFireBaseService userFireBaseService;
-//    
+    @Ignore
     @Test
     public void userService() {
-        Gson gson = new Gson();
-//        Optional<UserAuthen> opUserAuthen = Service.AUTHEN_FB.get("nhatnam@gmail.com");
-//        Optional<User> opUserAuthen = Service.USER_FB.getByField("email", "nhatnam@gmail.com");
-//
-//        if (opUserAuthen.isPresent()) {
-//            System.err.println(gson.toJson(opUserAuthen.get()));
-//        }
-//        System.err.println(Service.AUTHEN_FB.get("nhatnam@gmail.com"));
-//        Service.initExampleUser("atest@gmail.com", "10.30.58.78");
-//        System.err.println(Service.ONLINE_USERS.get("atest@gmail.com"));
-        scheduledExecutorService.schedule(new Runnable() {
-            @Override
-            public void run() {
-                System.err.println("-=========");
-            }
-        }, 1, TimeUnit.SECONDS);
-        while (true) {
+        Optional<UserAuthen> opUserOptional = Service.AUTHEN_FB.get("duydole@gmail.com");
+        System.err.println("111111111111111");
+        if (opUserOptional.isPresent()) {
+            UserAuthen userAuthen = opUserOptional.get();
+            Optional<UserAuthen> opUserOptional2 = Service.AUTHEN_FB.get("duydole@gmail.com");
+            System.err.println("2222");
 
+            if (opUserOptional2.isPresent()) {
+                System.err.println("OKKKKK");
+            }
         }
+    }
+
+    @Test
+    public void Test() {
+        System.err.println(Const.gson.toJson(new UserAuthen("email", "password")));
     }
 }

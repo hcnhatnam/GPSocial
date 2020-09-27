@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -156,9 +155,9 @@ public class UserController {
                 Cookie cookie = new Cookie("token", token);
                 response.addCookie(cookie);
             } else {
-                Service.AUTHEN_FB.deleteUser(email);
-                resultObject.setError(ResultObject.ERROR);
-                resultObject.setMessage("You have not signed up for an account with this email");
+//                Service.AUTHEN_FB.deleteUser(email);
+//                resultObject.setError(ResultObject.ERROR);
+//                resultObject.setMessage("You have not signed up for an account with this email");
             }
 
         } catch (Exception ex) {
@@ -228,6 +227,42 @@ public class UserController {
         }
         return resultObject;
     }
+
+    @GetMapping("/user/id")
+    public ResultObject getUserById(@RequestParam(value = "id", defaultValue = "") String id) {
+        ResultObject resultObject = new ResultObject();
+        if (id.isEmpty()) {
+            resultObject.setError(ResultObject.ERROR);
+            resultObject.setMessage("id is Empty");
+        } else {
+            Optional<User> opUser = Service.USER_FB.get(id);
+            if (opUser.isPresent()) {
+                resultObject.putData("user", opUser.get());
+            } else {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("User not found");
+            }
+        }
+        return resultObject;
+    }
+
+    @GetMapping("/user/email")
+    public ResultObject getUserByEmail(@RequestParam(value = "email", defaultValue = "") String email) {
+        ResultObject resultObject = new ResultObject();
+        if (email.isEmpty()) {
+            resultObject.setError(ResultObject.ERROR);
+            resultObject.setMessage("email is Empty");
+        } else {
+            Optional<User> opUser = Service.USER_FB.getByField("email",email);
+            if (opUser.isPresent()) {
+                resultObject.putData("user", opUser.get());
+            } else {
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("User not found");
+            }
+        }
+        return resultObject;
+    }
     public static final List<String> IPS = new ArrayList<>();
     public static final List<String> EMAIL_USERS = new ArrayList<>();
 
@@ -242,15 +277,15 @@ public class UserController {
         IPS.add("14.241.130.26");
         IPS.add("15.241.330.13");
         IPS.add("25.221.310.26");
-        IPS.add("10.11.430.26");
-        IPS.add("10.112.430.26");
-        IPS.add("10.114.430.26");
-        IPS.add("10.115.430.26");
-        IPS.add("10.116.430.26");
+        IPS.add("87.11.430.26");
+        IPS.add("90.112.430.26");
+        IPS.add("20.114.430.26");
+        IPS.add("30.115.430.26");
+        IPS.add("75.116.430.26");
         IPS.add("10.11.230.26");
         IPS.add("10.61.230.36");
         IPS.add("10.01.230.46");
-        IPS.add("10.41.230.56");
+        IPS.add("35.41.230.56");
         IPS.add("10.31.230.96");
 
         EMAIL_USERS.add("nam@gmail.com");

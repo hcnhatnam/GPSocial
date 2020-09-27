@@ -11,6 +11,7 @@ import com.iplocation.entites.LocationInfo;
 import com.iplocation.entites.OnlineUser;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.entites.User;
+import com.iplocation.service.cache.GuavaCache;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,36 +34,26 @@ public class Service {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Service.class);
 
-    public static FirebaseCRUD<User> USER_FB;
-    public static FirebaseCRUD<UserAuthen> AUTHEN_FB;
+    public static IDataOperate<User> USER_FB;
+    public static IDataOperate<UserAuthen> AUTHEN_FB;
     public static Map<String, OnlineUser> ONLINE_USERS = new ConcurrentHashMap<>();
     public static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-    private static int EXPIRE_TIME = 10 * 1000;
+    private static int EXPIRE_TIME = 10 * 100000;
     private static final Timer timer = new Timer(); // creating timer
 
     static {
-        USER_FB = new FirebaseCRUD<User>(User.class, "Users") {
-            @Override
-            public String getId(User obj) {
-                return obj.get_id();
-            }
-        };
-        AUTHEN_FB = new FirebaseCRUD<UserAuthen>(UserAuthen.class, "UserAthen") {
-            @Override
-            public String getId(UserAuthen obj) {
-                return obj.getEmail();
-            }
-        };
+//        USER_FB = new FirebaseCRUD<User>(User.class, "Users") {};
+        USER_FB = new GuavaCache<>(new FirebaseCRUD<>(User.class, "Users"));
+        AUTHEN_FB = new GuavaCache<>(new FirebaseCRUD<>(UserAuthen.class, "UserAthen"));
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
-                System.err.println("CleanData");
                 ONLINE_USERS.entrySet().forEach(entry -> {
                     String email = entry.getKey();
                     OnlineUser onlineUser = entry.getValue();
                     if (System.currentTimeMillis() - onlineUser.getLastPing() > EXPIRE_TIME) {
-                        ONLINE_USERS.remove(email);
-                        System.err.println("removeUser:" + email);
+//                        ONLINE_USERS.remove(email);
+//                        System.err.println("removeUser:" + email);
                     }
                 });
             }

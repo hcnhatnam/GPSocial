@@ -19,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserAuthen {
+public class UserAuthen implements IData {
 
     private String email;
     private String password;
@@ -39,6 +39,11 @@ public class UserAuthen {
         hash = 73 * hash + Objects.hashCode(this.email);
         hash = 73 * hash + Objects.hashCode(this.password);
         return hash;
+    }
+
+    @Override
+    public String getId() {
+        return this.email;
     }
 
 }
