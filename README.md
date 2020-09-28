@@ -23,7 +23,7 @@
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
  
-## Video Demo
+## [Video Demo](https://youtu.be/yQXcbAKjEho)
 ### Web
 [![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
 ### Mobile
