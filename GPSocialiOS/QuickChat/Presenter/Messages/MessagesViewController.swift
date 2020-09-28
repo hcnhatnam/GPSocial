@@ -55,6 +55,11 @@ class MessagesViewController: UIViewController, KeyboardHandler {
     fetchMessages()
     fetchUserName()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    showNavigationBar(enableShow: true)
+  }
 }
 
 //MARK: Private methods

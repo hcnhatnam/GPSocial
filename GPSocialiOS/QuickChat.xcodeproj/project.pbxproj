@@ -60,6 +60,7 @@
 		22EDC233226C5B24008F1BBC /* FirestorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EDC232226C5B24008F1BBC /* FirestorageService.swift */; };
 		22EDC235226C5B3D008F1BBC /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EDC234226C5B3D008F1BBC /* FirestoreService.swift */; };
 		5B9ECF6E03F5E624C52B3509 /* Pods_QuickChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1078AA3D2FF8C5707E873E0 /* Pods_QuickChat.framework */; };
+		F20C6DD02522352800C2AA4D /* LDMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20C6DCF2522352800C2AA4D /* LDMarker.swift */; };
 		F237E00B2519C7B6004E4F8B /* OwnerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F237E00A2519C7B6004E4F8B /* OwnerInfo.swift */; };
 		F23A69B62517324900886398 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A69B52517324900886398 /* Constants.swift */; };
 		F23A69B92517329E00886398 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A69B82517329E00886398 /* Size.swift */; };
@@ -134,6 +135,7 @@
 		64442DBDEF6A70CFEE9331D6 /* Pods-QuickChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickChat.debug.xcconfig"; path = "Target Support Files/Pods-QuickChat/Pods-QuickChat.debug.xcconfig"; sourceTree = "<group>"; };
 		9226BB5F97214501430FF2E8 /* Pods-QuickChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickChat.release.xcconfig"; path = "Target Support Files/Pods-QuickChat/Pods-QuickChat.release.xcconfig"; sourceTree = "<group>"; };
 		C1078AA3D2FF8C5707E873E0 /* Pods_QuickChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20C6DCF2522352800C2AA4D /* LDMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDMarker.swift; sourceTree = "<group>"; };
 		F237E00A2519C7B6004E4F8B /* OwnerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerInfo.swift; sourceTree = "<group>"; };
 		F23A69B52517324900886398 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F23A69B82517329E00886398 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				F2DBC7F02515FA0B0060864F /* MapViewController.swift */,
+				F20C6DCF2522352800C2AA4D /* LDMarker.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				2209BB282270A51600E6328A /* AudioService.swift in Sources */,
 				22EDC225226C5867008F1BBC /* StringExtension.swift in Sources */,
 				F28145A8251716A800D884E0 /* LDImageView.swift in Sources */,
+				F20C6DD02522352800C2AA4D /* LDMarker.swift in Sources */,
 				22EDC230226C5AEA008F1BBC /* FirebaseEnums.swift in Sources */,
 				22D46865226CE01B004B5B64 /* MapPreviewController.swift in Sources */,
 				22124CB1226C8544009800D4 /* UserManager.swift in Sources */,

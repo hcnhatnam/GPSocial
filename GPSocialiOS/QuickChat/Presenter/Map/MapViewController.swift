@@ -31,6 +31,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   private let userManager = UserManager()
   private let ownerMarker = GMSMarker()
   private let sv2UserManager = LDUserManager()
+  private var users = [ObjectUser]()
   
   override func loadView() {
     /// Setup camera
@@ -50,7 +51,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    showNavigationBar(enableShow: true)
+    showNavigationBar(enableShow: false)
+    fetchUsers()
+  }
+  
+  func fetchUsers() {
+    guard let id = userManager.currentUserID() else { return }
+    userManager.contacts {[weak self] results in
+      self?.users = results.filter({$0.id != id})
+    }
   }
     
   func setupGoogleMap() {
@@ -90,11 +99,22 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     }
   }
   
+  func userEntityToObjectUser(userEntity: UserEntity) -> ObjectUser {
+    let objUser = ObjectUser()
+    
+    objUser.id = userEntity.id ?? ""
+    objUser.email = userEntity.email!
+    objUser.profilePicLink = userEntity.profilePicLink ?? ""
+    
+    return objUser
+  }
+  
   private func _markOnMapWithUser(user: UserEntity) {
     if let position = user.position {
-      let marker = GMSMarker()
+      let marker = LDMarker()
       marker.position = position
       marker.iconView = self.markerImageViewWithUrl(url: user.profilePicLink)
+      marker.user = self.userEntityToObjectUser(userEntity: user)
       
       marker.map = googleMapView
       //clusterManager.add(marker)
@@ -155,14 +175,38 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
       return true
     }
     
-    let vc: MessagesViewController = UIStoryboard.initial(storyboard: .messages)
-    vc.conversation = conversations[0]
-    vc.modalPresentationStyle = .fullScreen
-    manager.markAsRead(conversations[0])
-    show(vc, sender: self)
+    if let marker = marker as? LDMarker {
+      openMessageViewControllerWithFriend(friendUser: marker.user!)
+    }
     
-    NSLog("Did tap marker")
     return false
+  }
+  
+  func openMessageViewControllerWithFriend(friendUser: ObjectUser) {
+    guard let currentID = userManager.currentUserID() else { return }
+    let vc: MessagesViewController = UIStoryboard.initial(storyboard: .messages)
+    if let conversation = conversations.filter({$0.userIDs.contains(friendUser.id)}).first {
+      vc.conversation = conversation
+      vc.modalPresentationStyle = .pageSheet
+      show(vc, sender: self)
+      return
+    }
+    
+    
+    weak var weakS = self
+    userManager.currentUserData { objectUser in
+      guard let _  = objectUser,
+            let weakSelf = weakS else { return }
+      
+      let conversation = ObjectConversation()
+      // bỏ đoạn setid của Conversation thàn doleduy_nam
+      //conversation.id = "\(ownerUser.name ?? "")_\(friendUser.name ?? "")"  /// ownerName_friendName
+      conversation.userIDs.append(contentsOf: [currentID, friendUser.id])
+      conversation.isRead = [currentID: true, friendUser.id: true]
+      vc.conversation = conversation
+      vc.modalPresentationStyle = .overFullScreen
+      weakSelf.show(vc, sender: weakSelf)
+    }
   }
   
   // MARK: - Private

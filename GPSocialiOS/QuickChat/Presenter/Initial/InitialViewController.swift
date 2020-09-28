@@ -62,7 +62,7 @@ class InitialViewController: UIViewController {
       
       let tabBarController = UITabBarController()
       tabBarController.viewControllers = [mapVC, chatVC, infoVC]
-      vc = tabBarController
+      vc = UINavigationController(rootViewController: tabBarController)
     }
     
     vc.modalPresentationStyle = .fullScreen

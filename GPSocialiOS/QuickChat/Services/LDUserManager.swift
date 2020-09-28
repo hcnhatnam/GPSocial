@@ -147,12 +147,29 @@ class LDUserManager {
     for userEmail in userjsons.keys {
       if let userDict = userjsons[userEmail],
          let json = userDict as? [String : Any] {
-        let userEntity = _parseToUserEntity(userjson: json)
+        var userEntity = _parseToUserEntity(userjson: json)
+        
+        ////Check dup
+        for user in userEntities {
+          if user.position?.latitude == userEntity.position?.latitude &&  user.position?.longitude == userEntity.position?.longitude {
+            let variation = (randomFloat(min: 0.0, max: 2.0) - 0.5) / 1500
+            let lat = userEntity.position!.latitude + variation
+            let lng = userEntity.position!.longitude + variation
+            userEntity.position = LDMapPosition(latitude: lat, longitude: lng)
+          }
+        }
+        ////End checkup
+        
+        
         userEntities.append(userEntity)
       }
     }
   
     return userEntities
+  }
+  
+  func randomFloat(min: Double, max:Double) -> Double {
+    return (Double(arc4random()) / 0xFFFFFFFF) * (max - min) + min
   }
   
   private func _parseToUserEntity(userjson: [String: Any]) -> UserEntity {
@@ -170,14 +187,29 @@ class LDUserManager {
       userEntity.position = position
     }
     
-    /// Avatar URL
+    /// User
     if let user = userjson["user"] as? [String:Any] {
+      
+      /// Avatar URL
       if let avtLink = user["profilePicLink"] as? String {
         if avtLink != "" {
           userEntity.profilePicLink = avtLink
         }
       }
+      
+      /// Email
+      if let email = user["email"] as? String {
+        userEntity.email = email
+      }
+      
+      /// id
+      if let id = user["id"] as? String {
+        userEntity.id = id
+      }
     }
+    
+    /// Id
+    //if let id = user
     
     print("Postion: lat: \(String(describing: userEntity.position?.latitude)), long: \(String(describing: userEntity.position?.longitude))")
     return userEntity
