@@ -55,10 +55,13 @@ The database used to show location can be obtained from :
 ## Installation
 ## Usage
 ## Wiki
-More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/IpLocationConnect/wiki)
+API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) https://github.com/hcnhatnam/GPSocial/wiki/API in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki) https://github.com/hcnhatnam/GPSocial/wiki/API
+
+More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/GPSocial/wiki)
+
 ## Contribution
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these wonderful people 💻:
 <table>
     <tr>
         <td align="center"><a href="https://github.com/hcnhatnam"><img
@@ -78,8 +81,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
                 title="Documentation">📖</a> <a
                 href="https://github.com/all-contributors/all-contributors/pulls?q=is%3Apr+reviewed-by%3Akentcdodds"
                 title="Reviewed Pull Requests">👀</a> <a href="#talk-kentcdodds" title="Talks">📢</a></td>
-
-    </tr>
 </table>
 
 ## License
