@@ -1,4 +1,6 @@
 
+# GPSocialBackend
+> GPSocial Backend is API for Web and IOS Application
 ## Prerequisites
 
 * SpringBoot v2.3.2 or up
@@ -21,9 +23,17 @@ Ensure the database `IP2LOCATION-LITE-DB11.IPV6.BIN` have into foder `/GPSocialB
 ```
 cd GPSBackend
 ./runservice
-
-Server started on port: 8765 (http)
 ```
+
+Server started on port : 8765 (http)
+
 ###### Check out a demo
 
 <a href="https://asciinema.org/a/361649" target="_blank"><img src="https://asciinema.org/a/361649.svg" /></a>
+
+
+## License
+
+[MIT](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE) license.
+
+Copyright (c) 2020 GPSocial Team
