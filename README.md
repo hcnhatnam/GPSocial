@@ -55,7 +55,7 @@ The database used to show location can be obtained from :
 ## Installation
 ## Usage
 ## Wiki
-API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) https://github.com/hcnhatnam/GPSocial/wiki/API in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki) https://github.com/hcnhatnam/GPSocial/wiki/API
+API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki)
 
 More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/GPSocial/wiki)
 
