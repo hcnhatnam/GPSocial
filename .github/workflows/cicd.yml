@@ -20,4 +20,4 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run:  cd GPSocialBackend && pwd./gradlew build
+        run:  cd GPSocialBackend && pwd && chmod +x gradlew &&./gradlew build
