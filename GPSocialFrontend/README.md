@@ -3,7 +3,7 @@
 
 **Live demo:** http://gpsocial.tk/
 
-## Build Setup
+## Build setup & run dev
 
 ```bash
 # clone the project
@@ -21,11 +21,11 @@ npm run dev
 
 This will automatically open http://localhost:7000
 
-## Build
-
-# build for production environment
+## build for production environment
+```bash
 npm run build:prod
 ```
+
 
 ## Advanced
 
@@ -36,7 +36,7 @@ npm run lint
 # code format check and auto fix
 npm run lint -- --fix
 ```
-## Demo
+## [Video Demo](https://youtu.be/yQXcbAKjEho)
 
 [![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
 
