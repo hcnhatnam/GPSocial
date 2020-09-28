@@ -79,7 +79,7 @@ Thanks goes to these wonderful people 💻:
                 href="#talk-kentcdodds" title="Talks">📢</a></td>
         <td align="center"><a href="https://github.com/duydole"><img
                     src="https://avatars2.githubusercontent.com/u/44370762?s=460&u=cb4d89887e8821c74567e5de95682eb6339ebe36&v=4"
-                    width="100px;" alt="" /><br /><sub><b>Kent
+                    width="100px;" alt="" /><br /><sub><b>
                         Duy Đỗ</b></sub></a><br /><a href="#question-kentcdodds" title="Answering Questions">💬</a> <a
                 href="https://github.com/all-contributors/all-contributors/commits?author=kentcdodds"
                 title="Documentation">📖</a> <a
