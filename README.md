@@ -9,7 +9,7 @@
 
 
 <p align="center">
-  Online social network. GPS<sub>ocial</sub> is a app to conect and have conversations with new friends around the world depend on location. 
+  Online social network. <b>GPS<sub>ocial</sub><b> is an app to connect and has conversations with new friends around the world depend on location.
   <br>
   <a href="https://github.com/hcnhatnam/IpLocationConnect/wiki"><strong>Explore docs »</strong></a>
   <br>
@@ -22,7 +22,15 @@
 ![CI](https://github.com/hcnhatnam/GPSocial/workflows/CI/badge.svg?branch=master&event=push)
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
-
+ 
+## Video Demo
+### Web
+[![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
+### Mobile
+## Link
+Web : http://gpsocial.tk/
+Api : http://apigpsocial.tk/
+Mobile(IOS) :
 ## Table of contents
 
 - [Description](#description)
