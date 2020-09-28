@@ -53,6 +53,10 @@ The database used to show location can be obtained from :
 * Spring Boot 2.3.2 and up
 * IP2Location™ LITE IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE Database
 ## Installation
+### 2 step:
+* Start API Service, the installation and demo at [GPSocialBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend)
+* Start Web, the installation and demo at [FrontBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend)</pre>
+
 ## Usage
 ## Wiki
 API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki)
