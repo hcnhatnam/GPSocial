@@ -1,5 +1,5 @@
 # GPSocialFrontend
-> GPSocial web use Vue-admin-template & Element UI & axios & iconfont & permission control & lint
+> GPSocial web use Vue-admin-template & Vue-google-map & Vue-advanced-chat
 
 **Live demo:** http://gpsocial.tk/
 
