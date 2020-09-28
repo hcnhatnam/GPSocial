@@ -201,10 +201,20 @@ public class UserController {
     }
 
     @RequestMapping("/user/info")
-    public ResultObject userInfo(@CookieValue(value = "token", defaultValue = "") String token) {
+    public ResultObject userInfo(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token, @RequestParam(value = "token", defaultValue = "") String tokenParam) {
         ResultObject resultObject = new ResultObject(0, "");
 
         try {
+            if (token.isEmpty()) {
+                token = tokenParam;
+                if (!tokenParam.isEmpty()) {
+                    LOGGER.info("TOKEN PARAM:" + tokenParam);
+                    Cookie cookie = new Cookie("token", tokenParam);
+                    response.addCookie(cookie);
+                } else {
+                    LOGGER.info("ALL TOKEN isEMpty:");
+                }
+            }
             if (!token.isEmpty()) {
                 String email = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8);
                 OnlineUser onlineUser = Service.ONLINE_USERS.get(email);
@@ -212,14 +222,20 @@ public class UserController {
                     if (email.equals(onlineUser.getUser().getEmail())) {
                         resultObject.putData("user", onlineUser);
                         return resultObject;
+                    } else {
+                        resultObject.setError(ResultObject.ERROR);
+                        resultObject.setMessage("Server has problem");
                     }
+                } else {
+                    resultObject.setError(ResultObject.ERROR);
+                    resultObject.setMessage("User has removed online user list");
                 }
 
+            } else {
+
+                resultObject.setError(ResultObject.ERROR);
+                resultObject.setMessage("Not Found Token");
             }
-
-            resultObject.setError(ResultObject.ERROR);
-            resultObject.setMessage("Not Found Token");
-
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
             resultObject.setError(ResultObject.ERROR);
@@ -253,7 +269,7 @@ public class UserController {
             resultObject.setError(ResultObject.ERROR);
             resultObject.setMessage("email is Empty");
         } else {
-            Optional<User> opUser = Service.USER_FB.getByField("email",email);
+            Optional<User> opUser = Service.USER_FB.getByField("email", email);
             if (opUser.isPresent()) {
                 resultObject.putData("user", opUser.get());
             } else {

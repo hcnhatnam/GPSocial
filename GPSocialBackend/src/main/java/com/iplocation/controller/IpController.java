@@ -19,6 +19,12 @@ public class IpController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(IpController.class);
 
+    @GetMapping("/")
+    public static ResultObject welcome(HttpServletRequest request) {
+        ResultObject resultObject = new ResultObject(0, "");
+        resultObject.putData("message", "This is API for GPSocial Application");
+        return resultObject;
+    }
     @GetMapping("/showip")
     public static ResultObject showip(HttpServletRequest request) {
         ResultObject resultObject = new ResultObject(0, "");

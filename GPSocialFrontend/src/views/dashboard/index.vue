@@ -40,7 +40,7 @@
       title="Chat"
       :show-close="false"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="80%"
       :fullscreen="fullscreen"
       :before-close="handleClose"
     >
@@ -235,7 +235,7 @@ export default {
             }
           }
         });
-      }, 4000);
+      }, 2000);
     },
     clickMarker(marker) {
       this.chooseUser = marker.user._id;
@@ -274,7 +274,7 @@ export default {
       );
       if (email === this.user.email) {
         marker.icon = {
-          url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
         };
       } else {
         marker.icon = {

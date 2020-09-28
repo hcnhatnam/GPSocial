@@ -64,7 +64,7 @@
       </div>
     </el-form>
     <p class="copyright">
-      © GPSocial TEAM
+      © Copyright 2020 GPSocial TEAM
       <br />
       <i class="el-icon-star-on" />
       <a

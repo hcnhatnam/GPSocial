@@ -652,18 +652,6 @@ export default {
       this.disableForm = true;
 
       const user = await findUser(this.invitedUserId);
-      console.log("userssssssssss", user);
-      if (user === null) {
-        console.log("addUserssss", user, this.invitedUserId);
-        await usersRef.doc(user._id).set(user);
-      }
-
-      // const id = user._id;
-      // var n = id.localeCompare(this.currentUserId);
-      // let _id = this.currentUserId + "_" + id;
-      // if (n === -1) {
-      //   _id = id + "_" + this.currentUserId;
-      // }
       const room = {
         users: [this.currentUserId, this.invitedUserId]
       };
