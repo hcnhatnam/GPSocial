@@ -21,5 +21,7 @@ jobs:
           java-version: 1.8
       - name: Change wrapper permissions
         run: cd GPSocialBackend && chmod +x ./gradlew
+      - name: gradle wrapper
+        run: gradle wrapper
       - name: Build with Gradle
         run: ./gradlew build
