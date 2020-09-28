@@ -28,7 +28,7 @@
 [![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
 ### Mobile
 ## Link
-<pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(IOS)</b> :</pre>
+<pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(IOS)</b> : Coming soon</pre>
 ## Table of contents
 
 - [Description](#description)
