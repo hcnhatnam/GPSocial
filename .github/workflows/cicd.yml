@@ -20,6 +20,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Generate Wrapper
-        run: gradle wrapper
+        run: cd GPSocialBackend && pwd && gradle wrapper
       - name: Build with Gradle
-        run: cd GPSocialBackend && pwd && ./gradlew build
+        run: ./gradlew build
