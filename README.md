@@ -9,7 +9,7 @@
 
 
 <p align="center">
-  Online social network. <b>GPS<sub>ocial</sub><b> is an app to connect and has conversations with new friends around the world depend on location.
+  Online social network. <b>GPS<sub>ocial</sub></b> is an app to connect and has conversations with new friends around the world depend on location.
   <br>
   <a href="https://github.com/hcnhatnam/IpLocationConnect/wiki"><strong>Explore docs »</strong></a>
   <br>
