@@ -41,7 +41,7 @@
 
 ## Description 
 
-<b>GPS<sub>ocial</sub><b> is a application written with front-end in Vue and Backend in Java (Spring Boot Framework), create your account, connect and have conversations with new friends who choose depend on location.
+<b>GPS<sub>ocial</sub></b> is a application written with front-end in Vue and Backend in Java (Spring Boot Framework), create your account, connect and have conversations with new friends who choose depend on location.
 
 The database used to show location can be obtained from :
 
