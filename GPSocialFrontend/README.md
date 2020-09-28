@@ -36,7 +36,7 @@ npm run lint
 # code format check and auto fix
 npm run lint -- --fix
 ```
-## [Video Demo](https://youtu.be/yQXcbAKjEho)
+## [Video Demo](https://youtu.be/zWczR5csW9M)
 
 [![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
 
