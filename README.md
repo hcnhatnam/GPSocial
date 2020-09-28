@@ -23,9 +23,9 @@
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
  
-## [Video Demo](https://youtu.be/yQXcbAKjEho)
+## [Video Demo](https://youtu.be/zWczR5csW9M)
 ### Web
-[![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/yQXcbAKjEho)
+[![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/zWczR5csW9M)
 ### Mobile
 ## Link
 <pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(IOS)</b> : Coming soon</pre>
