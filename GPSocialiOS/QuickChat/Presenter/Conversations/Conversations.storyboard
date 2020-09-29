@@ -206,7 +206,6 @@
         <!--Navigation Controller-->
         <scene sceneID="0fX-xj-jty">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="o9i-mF-ePN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="I7R-Xk-t9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Tnh-KX-0co">
@@ -226,6 +225,7 @@
                         <segue destination="ri6-fX-8IQ" kind="relationship" relationship="rootViewController" id="Xq8-e8-gGF"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o9i-mF-ePN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1605.7971014492755" y="428.57142857142856"/>
         </scene>

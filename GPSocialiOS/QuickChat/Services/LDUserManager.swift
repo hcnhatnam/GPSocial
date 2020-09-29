@@ -61,7 +61,7 @@ class LDUserManager {
       user.password = password
     } else {
       /// Tại sao đéo có password in UserDefault mà login làm gì?
-      fatalError()
+      ///fatalError()
     }
     
     guard let email = user.email, let password = user.password else { completion?("Login failed: Email nil or password nil"); return }

@@ -41,14 +41,14 @@ class InitialViewController: UIViewController {
       let mapVC = MapViewController()
       let mapItem = UITabBarItem()
       mapItem.title = "GPSocial"
-      mapItem.image = UIImage(named: "gpsicon")
+      mapItem.image = UIImage(named: "location-pointer")
       mapVC.tabBarItem = mapItem
 
       /// Chat
       let chatVC = UIStoryboard.initial(storyboard: .conversations)
       let chatBoxItem = UITabBarItem()
       chatBoxItem.title = "Chat Box"
-      chatBoxItem.image = UIImage(named: "icon1")
+      chatBoxItem.image = UIImage(named: "chat")
       chatVC.tabBarItem = chatBoxItem
       
       
@@ -61,7 +61,7 @@ class InitialViewController: UIViewController {
       
       
       let tabBarController = UITabBarController()
-      tabBarController.viewControllers = [mapVC, chatVC, infoVC]
+      tabBarController.viewControllers = [mapVC, chatVC]
       vc = UINavigationController(rootViewController: tabBarController)
     }
     

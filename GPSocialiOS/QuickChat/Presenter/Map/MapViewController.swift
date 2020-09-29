@@ -21,6 +21,7 @@ let kDefaultCameraZoom: Float = 4.0
 
 class MapViewController: UIViewController, GMSMapViewDelegate {
   
+  private var userOnlineCountLable = UILabel()
   private var googleMapView: GMSMapView!
   private var clusterManager: GMUClusterManager!
   private var ip2LocationService = IP2LocationService()
@@ -44,9 +45,31 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    addCountView()
     setupGoogleMap()
     fetchProfile()
     fetchConversations()
+  }
+  
+  func addCountView() {
+    let bg = UIView()
+    bg.layer.cornerRadius = scaledValue(10)
+    bg.frame = CGRect(x: scaledValue(16), y: scaledValue(60), width: scaledValue(190), height: scaledValue(50))
+    bg.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+    bg.makeShadow()
+    view.addSubview(bg)
+    
+    /// Count
+    bg .addSubview(userOnlineCountLable)
+    userOnlineCountLable.frame = CGRect(x: scaledValue(16), y: 0, width: 200, height: scaledValue(50))
+    userOnlineCountLable.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+    userOnlineCountLable.textColor = .red
+    
+    let fixedLabel = UILabel()
+    fixedLabel.text = "people are online"
+    fixedLabel.frame = CGRect(x: scaledValue(45), y: 0, width: 200, height: scaledValue(50))
+    fixedLabel.textColor = .white
+    bg.addSubview(fixedLabel )
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -158,6 +181,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         self.googleMapView.clear()
         //self.clusterManager.clearItems()
         self._markListUserOnMap(users: users)
+        self.userOnlineCountLable.text = "\(users.count)"
         //self.clusterManager.cluster()
       case .failure(let error):
         print(error)
@@ -168,6 +192,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
   // MARK: - GMUMapViewDelegate
   
   func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+    print("Did tap marker")
     mapView.animate(toLocation: marker.position)
     if let _ = marker.userData as? GMUCluster {
       mapView.animate(toZoom: mapView.camera.zoom + 1)
@@ -292,8 +317,8 @@ extension MapViewController {
     imgView.frame = CGRect(x: 0, y: 0, width: avatarWitdh, height: avatarWitdh)
     imgView.layer.cornerRadius = avatarWitdh/2
     imgView.clipsToBounds = true
-    imgView.layer.borderWidth = 1.0
-    imgView.layer.borderColor = UIColor.black.cgColor
+    imgView.layer.borderWidth = 0.5
+    imgView.layer.borderColor = UIColor.systemBlue.cgColor
    
     return imgView
   }
