@@ -29,7 +29,7 @@
 ![Demo Application](https://github.com/hcnhatnam/GPSocial/blob/master/Resource/GifDemo.gif)
 ### Mobile
 ## Link
-<pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(IOS)</b> : Coming soon</pre>
+<pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(iOS)</b> : Coming soon</pre>
 ## Table of contents
 
 - [Description](#description)
@@ -42,7 +42,7 @@
 
 ## Description 
 
-<b>GPS<sub>ocial</sub></b> is a application written with front-end in Vue, mobile App in IOS and Backend API in Java (Spring Boot Framework), create your account, connect and have conversations with new friends who choose depend on location.
+<b>GPS<sub>ocial</sub></b> is an application written with front-end in Vue, mobile App in iOS and Backend API in Java (Spring Boot Framework), create your account, connect and have conversations with new friends who choose depend on location.
 
 The database used to show location can be obtained from :
 
@@ -55,14 +55,14 @@ The database used to show location can be obtained from :
 * IP2Location™ LITE IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE Database
 ## Installation
 ### 2 step:
-* Start API Service, the installation and demo at [GPSocialBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend)
-* Start Web, the installation and demo at [FrontBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend)</pre>
+* Start API service, the installation and demo at [GPSocialBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend).
+* Start web, the installation and demo at [FrontBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend).</pre>
 
 ## Usage
 ## Wiki
-API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki)
+API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki).
 
-More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/GPSocial/wiki)
+More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/GPSocial/wiki).
 
 ## Contribution
 
