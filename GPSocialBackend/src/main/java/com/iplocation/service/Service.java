@@ -38,7 +38,7 @@ public class Service {
     public static IDataOperate<UserAuthen> AUTHEN_FB;
     public static Map<String, OnlineUser> ONLINE_USERS = new ConcurrentHashMap<>();
     public static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-    private static int EXPIRE_TIME = 10 * 100000;
+    private static int EXPIRE_TIME = 10 * 1000;
     private static final Timer timer = new Timer(); // creating timer
 
     static {
