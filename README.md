@@ -44,6 +44,11 @@
 
 <b>GPS<sub>ocial</sub></b> is an application written with front-end in Vue, mobile App in iOS and Backend API in Java (Spring Boot Framework), create your account, connect and have conversations with new friends of your choice based on their location.
 
+
+This project is a submission in [IP2LOCATION PROGRAMMING CONTEST 2020](https://contest.ip2location.com/) of [IP2Location™](https://lite.ip2location.com/)
+
+> IP2Location™ is a non-intrusive geo IP solution to help you to identify visitor's geographical location using a proprietary IP address lookup database and technology without invading the Internet user's privacy.
+
 The database used to show location can be obtained from :
 
  * [IP2Location™ LITE IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE Database](https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude)
