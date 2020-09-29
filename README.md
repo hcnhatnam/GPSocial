@@ -21,7 +21,7 @@
 
 ![CI](https://github.com/hcnhatnam/GPSocial/workflows/CI/badge.svg?branch=master&event=push)
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
- [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
  
 ## Demo
 ### Web
@@ -42,7 +42,7 @@
 
 ## Description 
 
-<b>GPS<sub>ocial</sub></b> is an application written with front-end in Vue, mobile App in iOS and Backend API in Java (Spring Boot Framework), create your account, connect and have conversations with new friends who choose depend on location.
+<b>GPS<sub>ocial</sub></b> is an application written with front-end in Vue, mobile App in iOS and Backend API in Java (Spring Boot Framework), create your account, connect and have conversations with new friends of your choice based on their location.
 
 The database used to show location can be obtained from :
 
@@ -50,8 +50,8 @@ The database used to show location can be obtained from :
  
  ## Prerequisites
 
-* Vue2 and up
-* Spring Boot 2.3.2 and up
+* Vue2 or later
+* Spring Boot 2.3.2 or later
 * IP2Location™ LITE IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE Database
 ## Installation
 ### 2 step:
