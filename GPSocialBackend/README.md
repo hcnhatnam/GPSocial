@@ -11,7 +11,7 @@
 
 Clone the repository and enter its respective folder
 
-Ensure the database `IP2LOCATION-LITE-DB11.IPV6.BIN` have into foder `/GPSocialBackend/libs/`
+Ensure the database `IP2LOCATION-LITE-DB11.IPV6.BIN` have into foder `GPSocialBackend/libs/`
 ```
 ├── GPSBackend
 │   ├── libs
