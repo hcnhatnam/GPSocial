@@ -52,8 +52,8 @@ public class Service {
                     String email = entry.getKey();
                     OnlineUser onlineUser = entry.getValue();
                     if (System.currentTimeMillis() - onlineUser.getLastPing() > EXPIRE_TIME) {
-//                        ONLINE_USERS.remove(email);
-//                        System.err.println("removeUser:" + email);
+                        ONLINE_USERS.remove(email);
+                        System.err.println("removeUser:" + email);
                     }
                 });
             }

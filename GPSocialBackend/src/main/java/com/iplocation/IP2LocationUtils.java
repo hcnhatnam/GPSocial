@@ -10,6 +10,7 @@ import com.ip2location.IPResult;
 import com.iplocation.entites.ResultIp2Location;
 import com.iplocation.entites.ResultIp2Location.ERROR_IP2LOCATION;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -26,15 +27,21 @@ public class IP2LocationUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IP2Location.class);
 
-    private static final String BIN_FILE = "libs/IP2LOCATION-LITE-DB11.IPV6.BIN/IP2LOCATION-LITE-DB11.IPV6.BIN";
+    private static final String BIN_FILE = "data/IP2LOCATION-LITE-DB11.IPV6.BIN";
     private static final IP2Location ip2Location;
 
     static {
         ip2Location = new IP2Location();
         ip2Location.IPDatabasePath = BIN_FILE;
 
-    }
+        File f = new File(ip2Location.IPDatabasePath);
+        if (!f.exists()) {
+            System.err.println("File data/IP2LOCATION-LITE-DB11.IPV6.BIN not exist!!!");
+            System.err.println("You can download IP2LOCATION-LITE-DB11.IPV6.BIN at https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude-zipcode-timezone");
+            System.exit(-1);
+        }
 
+    }
 
     public static Optional<ResultIp2Location> get(String ip) {
         try {

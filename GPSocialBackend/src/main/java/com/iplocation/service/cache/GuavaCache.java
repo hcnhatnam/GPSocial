@@ -74,7 +74,7 @@ public class GuavaCache<T extends IData> implements IDataOperate<T> {
         try {
             List<T> listAll = getAllCache();
             for (T obj : listAll) {
-                if (obj == null) { 
+                if (obj == null) {
                     continue;
                 }
 
@@ -91,7 +91,11 @@ public class GuavaCache<T extends IData> implements IDataOperate<T> {
                 }
             }
             Optional<T> opObj = dataOperate.getByField(fieldName, fieldValue);
-            cache.put(opObj.get().getId(), opObj);
+            if (opObj.isPresent()) {
+                cache.put(opObj.get().getId(), opObj);
+            } else {
+                LOGGER.error("NOT FOUND:" + fieldName + " , " + fieldValue);
+            }
             return opObj;
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);

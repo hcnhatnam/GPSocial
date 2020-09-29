@@ -85,21 +85,24 @@ public class UserController {
                 resultObject.setError(ResultObject.ERROR);
                 resultObject.setMessage("email empty");
             } else {
+                boolean isPresent = true;
                 UserAuthen userAuthen = new UserAuthen(email, password);
                 Optional<UserAuthen> op = Service.AUTHEN_FB.get(email);
                 if (!op.isPresent()) {
                     Service.AUTHEN_FB.save(userAuthen);
+                    isPresent = false;
+                }
+
+                Optional<User> opUser = Service.USER_FB.getByField("email", email);
+                if (!opUser.isPresent()) {
                     User userFireBase = new User(email, profilePicLink, username);
                     Service.USER_FB.save(userFireBase);
-                } else {
-                    Optional<User> ops = Service.USER_FB.getByField("email", email);
-                    if (ops.isPresent()) {
-                        Service.AUTHEN_FB.save(userAuthen);
-                    } else {
-                        resultObject.setError(ResultObject.ERROR);
-                        resultObject.setMessage("email exist");
-                    }
+                    isPresent = false;
 
+                }
+                if (isPresent) {
+                    resultObject.setError(ResultObject.ERROR);
+                    resultObject.setMessage("email exist");
                 }
             }
 
@@ -270,6 +273,7 @@ public class UserController {
             resultObject.setMessage("email is Empty");
         } else {
             Optional<User> opUser = Service.USER_FB.getByField("email", email);
+            System.err.println(email);
             if (opUser.isPresent()) {
                 resultObject.putData("user", opUser.get());
             } else {
