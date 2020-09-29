@@ -1,7 +1,7 @@
 
 <p align="center">
   <a href="https://github.com/hcnhatnam/GPSocial">
-    <img src="https://f5-group-zf.zdn.vn/2711ef554d17a249fb06/2543873291198976094" alt="GPSociallogo" width="400">
+    <img src="https://github.com/hcnhatnam/GPSocial/blob/master/Resource/logo.gif" alt="GPSociallogo" width="400">
   </a>
 </p>
 
@@ -23,9 +23,10 @@
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
  
-## [Video Demo](https://youtu.be/zWczR5csW9M)
+## Demo
 ### Web
-[![Watch the video](https://f21-zpg.zdn.vn/5361791714255777767/d72af1441be0e4bebdf1.jpg)](https://youtu.be/zWczR5csW9M)
+#### [Youtube Demo](https://youtu.be/zWczR5csW9M)
+![Demo Application](https://github.com/hcnhatnam/GPSocial/blob/master/Resource/GifDemo.gif)
 ### Mobile
 ## Link
 <pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(IOS)</b> : Coming soon</pre>
