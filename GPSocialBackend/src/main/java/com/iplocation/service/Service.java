@@ -5,16 +5,12 @@
  */
 package com.iplocation.service;
 
-import com.iplocation.controller.IpController;
 import com.iplocation.controller.UserController;
 import com.iplocation.entites.LocationInfo;
 import com.iplocation.entites.OnlineUser;
 import com.iplocation.entites.UserAuthen;
 import com.iplocation.entites.User;
 import com.iplocation.service.cache.GuavaCache;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Timer;

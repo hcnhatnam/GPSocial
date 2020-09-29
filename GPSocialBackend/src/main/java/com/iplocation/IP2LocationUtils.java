@@ -36,8 +36,11 @@ public class IP2LocationUtils {
 
         File f = new File(ip2Location.IPDatabasePath);
         if (!f.exists()) {
+            System.err.println("================>>>>>>ERROR<<<<<<================\n");
             System.err.println("File data/IP2LOCATION-LITE-DB11.IPV6.BIN not exist!!!");
-            System.err.println("You can download IP2LOCATION-LITE-DB11.IPV6.BIN at https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude-zipcode-timezone");
+            System.err.println("You can download IP2LOCATION-LITE-DB11.IPV6.BIN at https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude-zipcode-timezone and choose  'IPv6 BIN' \n");
+            System.err.println("================>>>>>>ERROR<<<<<<================");
+
             System.exit(-1);
         }
 
