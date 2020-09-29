@@ -3,8 +3,8 @@
 > GPSocial Backend is API for Web and IOS Application
 ## Prerequisites
 
-* SpringBoot v2.3.2 or up
-* Gradle 6.4.1 or up
+* SpringBoot v2.3.2 or later
+* Gradle 6.4.1 or later
 * IP2Location™ LITE IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE Database
 
 ## Installation
