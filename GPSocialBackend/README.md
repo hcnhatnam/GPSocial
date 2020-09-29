@@ -10,11 +10,12 @@
 ## Installation
 
 Clone the repository and enter its respective folder
+Ensure the database `IP2LOCATION-LITE-DB11.IPV6.BIN` have in the folder `GPSocialBackend/data/`.
 
-Ensure the database `IP2LOCATION-LITE-DB11.IPV6.BIN` have into foder `GPSocialBackend/libs/`
+If this database doesn't exist, you can access [ip2location](https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude-zipcode-timezone) and download IP2LOCATION-LITE-DB11.IPV6.BIN at "IPv6 BIN".
 ```
-├── GPSBackend
-│   ├── libs
+├── GPSocialBackend
+│   ├── data
 │   │   └── IP2LOCATION-LITE-DB11.IPV6.BIN
 ```
 
