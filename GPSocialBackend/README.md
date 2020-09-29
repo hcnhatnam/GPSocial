@@ -19,10 +19,19 @@ If this database doesn't exist, you can access [ip2location](https://lite.ip2loc
 │   │   └── IP2LOCATION-LITE-DB11.IPV6.BIN
 ```
 
+An error occurs if this database doesn't exist.
+```
+================>>>>>>ERROR<<<<<<================
+File data/IP2LOCATION-LITE-DB11.IPV6.BIN not exist!!!
+You can download IP2LOCATION-LITE-DB11.IPV6.BIN at https://lite.ip2location.com/database/ip-country-region-city-latitude-longitude-zipcode-timezone 
+================>>>>>>ERROR<<<<<<================
+> Task :bootRun FAILED
+FAILURE: Build failed with an exception.
+```
 ## Usage
 
 ```
-cd GPSBackend
+cd GPSocialBackend
 ./runservice
 ```
 
