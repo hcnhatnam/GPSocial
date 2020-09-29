@@ -23,4 +23,5 @@ for pid in $(ps aux|grep -a "GPS"|grep -a "com.iplocation.RestServiceApplication
 	echo "KILL PROCESS" $pid
 done
 
+./gradlew --configure-on-demand -x check clean build
 ./gradlew bootRun 
