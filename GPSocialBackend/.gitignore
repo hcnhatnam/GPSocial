@@ -128,3 +128,5 @@ local.properties
  
 # PDT-specific
 .buildpath
+!libs/*
+IP2LOCATION-LITE-DB11.IPV6.BIN
