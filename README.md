@@ -28,8 +28,8 @@
 #### [Youtube Demo](https://youtu.be/zWczR5csW9M)
 ![Demo Application](https://github.com/hcnhatnam/GPSocial/blob/master/Resource/GifDemo.gif)
 ### Mobile
-#### [Youtube Demo_IOS](https://youtu.be/klWXAMt5z8w)
-![Demo Application](https://github.com/hcnhatnam/GPSocial/blob/master/Resource/gifIOS.gif)
+#### [Youtube Demo_IOS](https://youtu.be/uZiFrHLuQFk)
+![Demo Application](https://github.com/hcnhatnam/GPSocial/blob/master/Resource/gifOfficalLight.gif)
 ## Link
 <pre><b>Web</b> : <a href="http://gpsocial.tk/">gpsocial.tk</a>              <b>Api</b> : <a href="http://apigpsocial.tk/">apigpsocial.tk</a>                 <b>Mobile(iOS)</b> : Coming soon to App Store</pre>
 ## Table of contents
