@@ -9,7 +9,7 @@
 
 
 <p align="center">
-  Online social network to connect and has conversations with new friends around the world depend on location.
+  A social network connecting and creating conversations with friends around the world based on location.
   <br>
   <a href="https://github.com/hcnhatnam/IpLocationConnect/wiki"><strong>Explore docs »</strong></a>
   <br>
