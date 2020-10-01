@@ -71,6 +71,15 @@ API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocia
 
 More information on how to use this project on the  [Wiki](https://github.com/hcnhatnam/GPSocial/wiki).
 
+## Related Project
+
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+
+- [vue-google-maps](https://github.com/xkjyeah/vue-google-maps)
+
+- [vue-advanced-chat](https://github.com/antoine92190/vue-advanced-chat)
+
+- [Quick-Chat](https://github.com/aslanyanhaik/Quick-Chat)
 ## Contribution
 
 Thanks goes to these wonderful people 💻:
