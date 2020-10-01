@@ -22,7 +22,10 @@
 ![CI](https://github.com/hcnhatnam/GPSocial/workflows/CI/badge.svg?branch=master&event=push)
 ![](https://erguotou520.github.io/vue-version-badge/vue2.2.x.svg)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hcnhatnam/GPSocial/blob/master/LICENSE)
- 
+
+
+[![Facebook: @nambku](https://img.shields.io/badge/facebook-%231877F2.svg?&style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/hcnnam.bku/posts/1279018149113345)
+
 ## Demo
 ### Web
 #### [Youtube Demo](https://youtu.be/zWczR5csW9M)
