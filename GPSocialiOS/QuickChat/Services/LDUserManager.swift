@@ -21,6 +21,16 @@ struct UserEntity {
   var profilePicLink: String?
   var username: String?
   var position: LDMapPosition?
+  
+  ///
+  var contry_code: Int?
+  var ipv4: String?
+  var latitude: Double?
+  var longitude: Double?
+  var city: String?
+  var state: String?
+  var postal: Int?
+  var country_name: String?
 }
 
 
@@ -93,6 +103,65 @@ class LDUserManager {
     }.fire()
   }
 
+  public func getInfoOfUser(email: String, completion: @escaping (Result<UserEntity, Error>) -> Void) {
+    let url = serverUrl + "/user/info/"
+    
+    
+    var parameters: Dictionary<String, Any> = [:]
+    let utf8str = email.data(using: .utf8)
+    if let base64Encoded = utf8str?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) {
+      parameters = [
+        "token": base64Encoded,
+      ]
+    }
+    
+    AF.request(url, parameters: parameters).response { response in
+      switch response.result {
+      case .success(let data):
+        guard let data = data else {
+          /// Sao đéo có data?
+          assert(false)
+          return
+        }
+        
+        do {
+          if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            if let errorCode = json["error"] as? Int {
+              if errorCode == successCode {
+                if let data = json["data"] as? [String: Any] {
+                  if let user = data["user"] as? [String: Any] {
+                    if let locationInfo = user["locationInfo"] as? [String: Any] {
+                      
+                      var entity = UserEntity()
+                      entity.contry_code = locationInfo["country_code"] as? Int
+                      entity.ipv4 = locationInfo["ipv4"] as? String
+                      entity.latitude = locationInfo["latitude"] as? Double
+                      entity.longitude = locationInfo["longitude"] as? Double
+                      entity.city = locationInfo["city"] as? String
+                      entity.state = locationInfo["state"] as? String
+                      entity.postal = locationInfo["postal"] as? Int
+                      entity.country_name = locationInfo["country_name"] as? String
+                      
+                      completion(.success(entity))
+                    }
+                  }
+                }
+              } else {
+                assert(false)
+              }
+            }
+          }
+        } catch let error as NSError {
+          print(error)
+          completion(.failure(error))
+        }
+        
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
   // MARK: Private
   
   private func _requestListOnlineUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
@@ -118,7 +187,7 @@ class LDUserManager {
         do {
           if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             if let errorCode = json["error"] as? Int {
-              if errorCode == successCode {
+                if errorCode == successCode {
                 if let data = json["data"] as? [String: Any] {
                   if let onlineusers = data["onlineUsers"] as? [String: Any] {
                     let users = self._parseDataJsonsDictToUserEntities(onlineusers)
@@ -126,7 +195,7 @@ class LDUserManager {
                   }
                 }
               } else {
-                assert(false)
+                //assert(false)
               }
             }
           }

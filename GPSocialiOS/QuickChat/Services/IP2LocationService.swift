@@ -49,7 +49,7 @@ class IP2LocationService {
           do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
               if let data = json["data"] as? [String: Any] {
-                if let ips = data["ips"] as? [String: Any] {
+                if let ips = data["info"] as? [String: Any] {
                   let latitude = ips["latitude"] as! Double
                   let longitude = ips["longitude"] as! Double
                   return completion(.success(CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))

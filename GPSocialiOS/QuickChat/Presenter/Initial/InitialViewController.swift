@@ -56,12 +56,12 @@ class InitialViewController: UIViewController {
       let infoVC = IPInforViewController()
       let infoItem = UITabBarItem()
       infoItem.title = "Detail"
-      infoItem.image = UIImage(named: "icon1")
+      infoItem.image = UIImage(named: "info")
       infoVC.tabBarItem = infoItem
       
       
       let tabBarController = UITabBarController()
-      tabBarController.viewControllers = [mapVC, chatVC]
+      tabBarController.viewControllers = [mapVC, chatVC, infoVC]
       vc = UINavigationController(rootViewController: tabBarController)
     }
     

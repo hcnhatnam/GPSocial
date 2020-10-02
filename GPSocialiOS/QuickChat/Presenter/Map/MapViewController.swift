@@ -62,12 +62,12 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     /// Count
     bg .addSubview(userOnlineCountLable)
     userOnlineCountLable.frame = CGRect(x: scaledValue(16), y: 0, width: 200, height: scaledValue(50))
-    userOnlineCountLable.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+    userOnlineCountLable.font = UIFont.systemFont(ofSize: scaledValue(30), weight: .bold)
     userOnlineCountLable.textColor = .red
     
     let fixedLabel = UILabel()
     fixedLabel.text = "people are online"
-    fixedLabel.frame = CGRect(x: scaledValue(45), y: 0, width: 200, height: scaledValue(50))
+    fixedLabel.frame = CGRect(x: scaledValue(45), y: 0, width: scaledValue(200), height: scaledValue(50))
     fixedLabel.textColor = .white
     bg.addSubview(fixedLabel )
   }
@@ -110,7 +110,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
 
     ownerMarker.iconView = ownerAvatart
     ownerMarker.tracksViewChanges = true
-    _markOwnerLocationOnMapView()
+    //_markOwnerLocationOnMapView()
   }
     
   // MARK: Google Map Marker
