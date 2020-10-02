@@ -68,6 +68,8 @@ The database used to show location can be obtained from :
 * Start API service, the installation and demo at [GPSocialBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend).
 * Start web, the installation and demo at [FrontBackend/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend).</pre>
 
+
+**Note: To install iOS App, please check at [GPSocialIOS/README.md](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialiOS)
 ## Usage
 ## Wiki
 API using of [Backend](https://github.com/hcnhatnam/GPSocial/tree/master/GPSocialBackend) in [API GPSocial](https://github.com/hcnhatnam/IpLocationConnect/wiki).
